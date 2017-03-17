@@ -1,0 +1,517 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\EmguCV.3.1.0.1\build\EmguCV.props" Condition="Exists('..\packages\EmguCV.3.1.0.1\build\EmguCV.props')" />
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{353BB4B8-14E8-40A2-9636-A46F8B868C95}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>VirtualAssistentApp</RootNamespace>
+    <AssemblyName>VirtualAssistentApp</AssemblyName>
+    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Emgu.CV.UI, Version=3.1.0.2282, Culture=neutral, PublicKeyToken=7281126722ab4438, processorArchitecture=MSIL">
+      <HintPath>..\packages\EmguCV.3.1.0.1\lib\net30\Emgu.CV.UI.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Emgu.CV.UI.GL, Version=3.1.0.2282, Culture=neutral, PublicKeyToken=7281126722ab4438, processorArchitecture=MSIL">
+      <HintPath>..\packages\EmguCV.3.1.0.1\lib\net30\Emgu.CV.UI.GL.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Emgu.CV.World, Version=3.1.0.2282, Culture=neutral, PublicKeyToken=7281126722ab4438, processorArchitecture=MSIL">
+      <HintPath>..\packages\EmguCV.3.1.0.1\lib\net30\Emgu.CV.World.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="OpenTK, Version=2.0.0.0, Culture=neutral, PublicKeyToken=bad199fe84eb3df4, processorArchitecture=MSIL">
+      <HintPath>..\packages\OpenTK.2.0.0\lib\net20\OpenTK.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="OpenTK.GLControl, Version=1.1.0.0, Culture=neutral, PublicKeyToken=bad199fe84eb3df4, processorArchitecture=MSIL">
+      <HintPath>..\packages\OpenTK.GLControl.1.1.2349.61993\lib\NET40\OpenTK.GLControl.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="SharpDX.MediaFoundation, Version=3.0.0.0, Culture=neutral, PublicKeyToken=b4dcf0f35e5521f1, processorArchitecture=MSIL" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Speech" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="ZedGraph, Version=5.1.7.430, Culture=neutral, PublicKeyToken=02a83cbd123fcd60, processorArchitecture=MSIL">
+      <HintPath>..\packages\ZedGraph.5.1.7\lib\net35-Client\ZedGraph.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Form1.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form1.Designer.cs">
+      <DependentUpon>Form1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="HandleProcess.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="Form1.resx">
+      <DependentUpon>Form1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <None Include="OpenTK.dll.config" />
+    <None Include="packages.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="commands.txt" />
+    <Content Include="Images\background.jpg" />
+    <Content Include="Images\carbon.png" />
+    <Content Include="Images\png\add-1.png" />
+    <Content Include="Images\png\add-2.png" />
+    <Content Include="Images\png\add-3.png" />
+    <Content Include="Images\png\add.png" />
+    <Content Include="Images\png\agenda.png" />
+    <Content Include="Images\png\alarm-1.png" />
+    <Content Include="Images\png\alarm-clock-1.png" />
+    <Content Include="Images\png\alarm-clock.png" />
+    <Content Include="Images\png\alarm.png" />
+    <Content Include="Images\png\albums.png" />
+    <Content Include="Images\png\app.png" />
+    <Content Include="Images\png\archive-1.png" />
+    <Content Include="Images\png\archive-2.png" />
+    <Content Include="Images\png\archive-3.png" />
+    <Content Include="Images\png\archive.png" />
+    <Content Include="Images\png\attachment.png" />
+    <Content Include="Images\png\back.png" />
+    <Content Include="Images\png\battery-1.png" />
+    <Content Include="Images\png\battery-2.png" />
+    <Content Include="Images\png\battery-3.png" />
+    <Content Include="Images\png\battery-4.png" />
+    <Content Include="Images\png\battery-5.png" />
+    <Content Include="Images\png\battery-6.png" />
+    <Content Include="Images\png\battery-7.png" />
+    <Content Include="Images\png\battery-8.png" />
+    <Content Include="Images\png\battery-9.png" />
+    <Content Include="Images\png\battery.png" />
+    <Content Include="Images\png\binoculars.png" />
+    <Content Include="Images\png\blueprint.png" />
+    <Content Include="Images\png\bluetooth-1.png" />
+    <Content Include="Images\png\bluetooth.png" />
+    <Content Include="Images\png\bookmark-1.png" />
+    <Content Include="Images\png\bookmark.png" />
+    <Content Include="Images\png\briefcase.png" />
+    <Content Include="Images\png\broken-link.png" />
+    <Content Include="Images\png\calculator-1.png" />
+    <Content Include="Images\png\calculator.png" />
+    <Content Include="Images\png\calendar-1.png" />
+    <Content Include="Images\png\calendar-2.png" />
+    <Content Include="Images\png\calendar-3.png" />
+    <Content Include="Images\png\calendar-4.png" />
+    <Content Include="Images\png\calendar-5.png" />
+    <Content Include="Images\png\calendar-6.png" />
+    <Content Include="Images\png\calendar-7.png" />
+    <Content Include="Images\png\calendar.png" />
+    <Content Include="Images\png\checked-1.png" />
+    <Content Include="Images\png\checked.png" />
+    <Content Include="Images\png\clock-1.png" />
+    <Content Include="Images\png\clock.png" />
+    <Content Include="Images\png\close.png" />
+    <Content Include="Images\png\cloud-computing-1.png" />
+    <Content Include="Images\png\cloud-computing-2.png" />
+    <Content Include="Images\png\cloud-computing-3.png" />
+    <Content Include="Images\png\cloud-computing-4.png" />
+    <Content Include="Images\png\cloud-computing-5.png" />
+    <Content Include="Images\png\cloud-computing.png" />
+    <Content Include="Images\png\cloud.png" />
+    <Content Include="Images\png\command.png" />
+    <Content Include="Images\png\compact-disc-1.png" />
+    <Content Include="Images\png\compact-disc-2.png" />
+    <Content Include="Images\png\compact-disc.png" />
+    <Content Include="Images\png\compass.png" />
+    <Content Include="Images\png\compose.png" />
+    <Content Include="Images\png\controls-1.png" />
+    <Content Include="Images\png\controls-2.png" />
+    <Content Include="Images\png\controls-3.png" />
+    <Content Include="Images\png\controls-4.png" />
+    <Content Include="Images\png\controls-5.png" />
+    <Content Include="Images\png\controls-6.png" />
+    <Content Include="Images\png\controls-7.png" />
+    <Content Include="Images\png\controls-8.png" />
+    <Content Include="Images\png\controls-9.png" />
+    <Content Include="Images\png\controls.png" />
+    <Content Include="Images\png\database-1.png" />
+    <Content Include="Images\png\database-2.png" />
+    <Content Include="Images\png\database-3.png" />
+    <Content Include="Images\png\database.png" />
+    <Content Include="Images\png\diamond.png" />
+    <Content Include="Images\png\diploma.png" />
+    <Content Include="Images\png\dislike-1.png" />
+    <Content Include="Images\png\dislike.png" />
+    <Content Include="Images\png\divide-1.png" />
+    <Content Include="Images\png\divide.png" />
+    <Content Include="Images\png\division.png" />
+    <Content Include="Images\png\document.png" />
+    <Content Include="Images\png\download.png" />
+    <Content Include="Images\png\edit-1.png" />
+    <Content Include="Images\png\edit.png" />
+    <Content Include="Images\png\eject-1.png" />
+    <Content Include="Images\png\eject.png" />
+    <Content Include="Images\png\equal-1.png" />
+    <Content Include="Images\png\equal-2.png" />
+    <Content Include="Images\png\equal.png" />
+    <Content Include="Images\png\error.png" />
+    <Content Include="Images\png\exit-1.png" />
+    <Content Include="Images\png\exit-2.png" />
+    <Content Include="Images\png\exit.png" />
+    <Content Include="Images\png\eyeglasses.png" />
+    <Content Include="Images\png\fast-forward-1.png" />
+    <Content Include="Images\png\fast-forward.png" />
+    <Content Include="Images\png\fax.png" />
+    <Content Include="Images\png\file-1.png" />
+    <Content Include="Images\png\file-2.png" />
+    <Content Include="Images\png\file.png" />
+    <Content Include="Images\png\film.png" />
+    <Content Include="Images\png\fingerprint.png" />
+    <Content Include="Images\png\flag-1.png" />
+    <Content Include="Images\png\flag-2.png" />
+    <Content Include="Images\png\flag-3.png" />
+    <Content Include="Images\png\flag-4.png" />
+    <Content Include="Images\png\flag.png" />
+    <Content Include="Images\png\focus.png" />
+    <Content Include="Images\png\folder-1.png" />
+    <Content Include="Images\png\folder-10.png" />
+    <Content Include="Images\png\folder-11.png" />
+    <Content Include="Images\png\folder-12.png" />
+    <Content Include="Images\png\folder-13.png" />
+    <Content Include="Images\png\folder-14.png" />
+    <Content Include="Images\png\folder-15.png" />
+    <Content Include="Images\png\folder-16.png" />
+    <Content Include="Images\png\folder-17.png" />
+    <Content Include="Images\png\folder-18.png" />
+    <Content Include="Images\png\folder-19.png" />
+    <Content Include="Images\png\folder-2.png" />
+    <Content Include="Images\png\folder-3.png" />
+    <Content Include="Images\png\folder-4.png" />
+    <Content Include="Images\png\folder-5.png" />
+    <Content Include="Images\png\folder-6.png" />
+    <Content Include="Images\png\folder-7.png" />
+    <Content Include="Images\png\folder-8.png" />
+    <Content Include="Images\png\folder-9.png" />
+    <Content Include="Images\png\folder.png" />
+    <Content Include="Images\png\forbidden.png" />
+    <Content Include="Images\png\funnel.png" />
+    <Content Include="Images\png\garbage-1.png" />
+    <Content Include="Images\png\garbage-2.png" />
+    <Content Include="Images\png\garbage.png" />
+    <Content Include="Images\png\gift.png" />
+    <Content Include="Images\png\help.png" />
+    <Content Include="Images\png\hide.png" />
+    <Content Include="Images\png\hold.png" />
+    <Content Include="Images\png\home-1.png" />
+    <Content Include="Images\png\home-2.png" />
+    <Content Include="Images\png\home.png" />
+    <Content Include="Images\png\hourglass-1.png" />
+    <Content Include="Images\png\hourglass-2.png" />
+    <Content Include="Images\png\hourglass-3.png" />
+    <Content Include="Images\png\hourglass.png" />
+    <Content Include="Images\png\house.png" />
+    <Content Include="Images\png\id-card-1.png" />
+    <Content Include="Images\png\id-card-2.png" />
+    <Content Include="Images\png\id-card-3.png" />
+    <Content Include="Images\png\id-card-4.png" />
+    <Content Include="Images\png\id-card-5.png" />
+    <Content Include="Images\png\id-card.png" />
+    <Content Include="Images\png\idea.png" />
+    <Content Include="Images\png\incoming.png" />
+    <Content Include="Images\png\infinity.png" />
+    <Content Include="Images\png\info.png" />
+    <Content Include="Images\png\internet.png" />
+    <Content Include="Images\png\key.png" />
+    <Content Include="Images\png\lamp.png" />
+    <Content Include="Images\png\layers-1.png" />
+    <Content Include="Images\png\layers.png" />
+    <Content Include="Images\png\like-1.png" />
+    <Content Include="Images\png\like-2.png" />
+    <Content Include="Images\png\like.png" />
+    <Content Include="Images\png\link.png" />
+    <Content Include="Images\png\list-1.png" />
+    <Content Include="Images\png\list.png" />
+    <Content Include="Images\png\lock-1.png" />
+    <Content Include="Images\png\lock.png" />
+    <Content Include="Images\png\locked-1.png" />
+    <Content Include="Images\png\locked-2.png" />
+    <Content Include="Images\png\locked-3.png" />
+    <Content Include="Images\png\locked-4.png" />
+    <Content Include="Images\png\locked-5.png" />
+    <Content Include="Images\png\locked-6.png" />
+    <Content Include="Images\png\locked.png" />
+    <Content Include="Images\png\login.png" />
+    <Content Include="Images\png\magic-wand.png" />
+    <Content Include="Images\png\magnet-1.png" />
+    <Content Include="Images\png\magnet-2.png" />
+    <Content Include="Images\png\magnet.png" />
+    <Content Include="Images\png\map-1.png" />
+    <Content Include="Images\png\map-2.png" />
+    <Content Include="Images\png\map-location.png" />
+    <Content Include="Images\png\map.png" />
+    <Content Include="Images\png\megaphone-1.png" />
+    <Content Include="Images\png\megaphone.png" />
+    <Content Include="Images\png\menu-1.png" />
+    <Content Include="Images\png\menu-2.png" />
+    <Content Include="Images\png\menu-3.png" />
+    <Content Include="Images\png\menu-4.png" />
+    <Content Include="Images\png\menu.png" />
+    <Content Include="Images\png\microphone-1.png" />
+    <Content Include="Images\png\microphone.png" />
+    <Content Include="Images\png\minus-1.png" />
+    <Content Include="Images\png\minus.png" />
+    <Content Include="Images\png\more-1.png" />
+    <Content Include="Images\png\more-2.png" />
+    <Content Include="Images\png\more.png" />
+    <Content Include="Images\png\multiply-1.png" />
+    <Content Include="Images\png\multiply.png" />
+    <Content Include="Images\png\music-player-1.png" />
+    <Content Include="Images\png\music-player-2.png" />
+    <Content Include="Images\png\music-player-3.png" />
+    <Content Include="Images\png\music-player.png" />
+    <Content Include="Images\png\mute.png" />
+    <Content Include="Images\png\muted.png" />
+    <Content Include="Images\png\navigation-1.png" />
+    <Content Include="Images\png\navigation.png" />
+    <Content Include="Images\png\network.png" />
+    <Content Include="Images\png\newspaper.png" />
+    <Content Include="Images\png\next.png" />
+    <Content Include="Images\png\note.png" />
+    <Content Include="Images\png\notebook-1.png" />
+    <Content Include="Images\png\notebook-2.png" />
+    <Content Include="Images\png\notebook-3.png" />
+    <Content Include="Images\png\notebook-4.png" />
+    <Content Include="Images\png\notebook-5.png" />
+    <Content Include="Images\png\notebook.png" />
+    <Content Include="Images\png\notepad-1.png" />
+    <Content Include="Images\png\notepad-2.png" />
+    <Content Include="Images\png\notepad.png" />
+    <Content Include="Images\png\notification.png" />
+    <Content Include="Images\png\paper-plane-1.png" />
+    <Content Include="Images\png\paper-plane.png" />
+    <Content Include="Images\png\pause-1.png" />
+    <Content Include="Images\png\pause.png" />
+    <Content Include="Images\png\percent-1.png" />
+    <Content Include="Images\png\percent.png" />
+    <Content Include="Images\png\perspective.png" />
+    <Content Include="Images\png\photo-camera-1.png" />
+    <Content Include="Images\png\photo-camera.png" />
+    <Content Include="Images\png\photos.png" />
+    <Content Include="Images\png\picture-1.png" />
+    <Content Include="Images\png\picture-2.png" />
+    <Content Include="Images\png\picture.png" />
+    <Content Include="Images\png\pin.png" />
+    <Content Include="Images\png\placeholder-1.png" />
+    <Content Include="Images\png\placeholder-2.png" />
+    <Content Include="Images\png\placeholder-3.png" />
+    <Content Include="Images\png\placeholder.png" />
+    <Content Include="Images\png\placeholders.png" />
+    <Content Include="Images\png\play-button-1.png" />
+    <Content Include="Images\png\play-button.png" />
+    <Content Include="Images\png\plus.png" />
+    <Content Include="Images\png\power.png" />
+    <Content Include="Images\png\previous.png" />
+    <Content Include="Images\png\price-tag.png" />
+    <Content Include="Images\png\print.png" />
+    <Content Include="Images\png\push-pin.png" />
+    <Content Include="Images\png\radar.png" />
+    <Content Include="Images\png\reading.png" />
+    <Content Include="Images\png\record.png" />
+    <Content Include="Images\png\repeat-1.png" />
+    <Content Include="Images\png\repeat.png" />
+    <Content Include="Images\png\restart.png" />
+    <Content Include="Images\png\resume.png" />
+    <Content Include="Images\png\rewind-1.png" />
+    <Content Include="Images\png\rewind.png" />
+    <Content Include="Images\png\route.png" />
+    <Content Include="Images\png\save.png" />
+    <Content Include="Images\png\search-1.png" />
+    <Content Include="Images\png\search.png" />
+    <Content Include="Images\png\send.png" />
+    <Content Include="Images\png\server-1.png" />
+    <Content Include="Images\png\server-2.png" />
+    <Content Include="Images\png\server-3.png" />
+    <Content Include="Images\png\server.png" />
+    <Content Include="Images\png\settings-1.png" />
+    <Content Include="Images\png\settings-2.png" />
+    <Content Include="Images\png\settings-3.png" />
+    <Content Include="Images\png\settings-4.png" />
+    <Content Include="Images\png\settings-5.png" />
+    <Content Include="Images\png\settings-6.png" />
+    <Content Include="Images\png\settings-7.png" />
+    <Content Include="Images\png\settings-8.png" />
+    <Content Include="Images\png\settings-9.png" />
+    <Content Include="Images\png\settings.png" />
+    <Content Include="Images\png\share-1.png" />
+    <Content Include="Images\png\share-2.png" />
+    <Content Include="Images\png\share.png" />
+    <Content Include="Images\png\shuffle-1.png" />
+    <Content Include="Images\png\shuffle.png" />
+    <Content Include="Images\png\shutdown.png" />
+    <Content Include="Images\png\sign-1.png" />
+    <Content Include="Images\png\sign.png" />
+    <Content Include="Images\png\skip.png" />
+    <Content Include="Images\png\smartphone-1.png" />
+    <Content Include="Images\png\smartphone-10.png" />
+    <Content Include="Images\png\smartphone-11.png" />
+    <Content Include="Images\png\smartphone-2.png" />
+    <Content Include="Images\png\smartphone-3.png" />
+    <Content Include="Images\png\smartphone-4.png" />
+    <Content Include="Images\png\smartphone-5.png" />
+    <Content Include="Images\png\smartphone-6.png" />
+    <Content Include="Images\png\smartphone-7.png" />
+    <Content Include="Images\png\smartphone-8.png" />
+    <Content Include="Images\png\smartphone-9.png" />
+    <Content Include="Images\png\smartphone.png" />
+    <Content Include="Images\png\speaker-1.png" />
+    <Content Include="Images\png\speaker-2.png" />
+    <Content Include="Images\png\speaker-3.png" />
+    <Content Include="Images\png\speaker-4.png" />
+    <Content Include="Images\png\speaker-5.png" />
+    <Content Include="Images\png\speaker-6.png" />
+    <Content Include="Images\png\speaker-7.png" />
+    <Content Include="Images\png\speaker-8.png" />
+    <Content Include="Images\png\speaker.png" />
+    <Content Include="Images\png\spotlight.png" />
+    <Content Include="Images\png\star-1.png" />
+    <Content Include="Images\png\star.png" />
+    <Content Include="Images\png\stop-1.png" />
+    <Content Include="Images\png\stop.png" />
+    <Content Include="Images\png\stopwatch-1.png" />
+    <Content Include="Images\png\stopwatch-2.png" />
+    <Content Include="Images\png\stopwatch-3.png" />
+    <Content Include="Images\png\stopwatch-4.png" />
+    <Content Include="Images\png\stopwatch.png" />
+    <Content Include="Images\png\street-1.png" />
+    <Content Include="Images\png\street.png" />
+    <Content Include="Images\png\substract-1.png" />
+    <Content Include="Images\png\substract.png" />
+    <Content Include="Images\png\success.png" />
+    <Content Include="Images\png\switch-1.png" />
+    <Content Include="Images\png\switch-2.png" />
+    <Content Include="Images\png\switch-3.png" />
+    <Content Include="Images\png\switch-4.png" />
+    <Content Include="Images\png\switch-5.png" />
+    <Content Include="Images\png\switch-6.png" />
+    <Content Include="Images\png\switch-7.png" />
+    <Content Include="Images\png\switch.png" />
+    <Content Include="Images\png\tabs-1.png" />
+    <Content Include="Images\png\tabs.png" />
+    <Content Include="Images\png\target.png" />
+    <Content Include="Images\png\television-1.png" />
+    <Content Include="Images\png\television.png" />
+    <Content Include="Images\png\time.png" />
+    <Content Include="Images\png\trash.png" />
+    <Content Include="Images\png\umbrella.png" />
+    <Content Include="Images\png\unlink.png" />
+    <Content Include="Images\png\unlocked-1.png" />
+    <Content Include="Images\png\unlocked-2.png" />
+    <Content Include="Images\png\unlocked.png" />
+    <Content Include="Images\png\upload.png" />
+    <Content Include="Images\png\user-1.png" />
+    <Content Include="Images\png\user-2.png" />
+    <Content Include="Images\png\user-3.png" />
+    <Content Include="Images\png\user-4.png" />
+    <Content Include="Images\png\user-5.png" />
+    <Content Include="Images\png\user-6.png" />
+    <Content Include="Images\png\user-7.png" />
+    <Content Include="Images\png\user.png" />
+    <Content Include="Images\png\users-1.png" />
+    <Content Include="Images\png\users.png" />
+    <Content Include="Images\png\video-camera-1.png" />
+    <Content Include="Images\png\video-camera.png" />
+    <Content Include="Images\png\video-player-1.png" />
+    <Content Include="Images\png\video-player-2.png" />
+    <Content Include="Images\png\video-player.png" />
+    <Content Include="Images\png\view-1.png" />
+    <Content Include="Images\png\view-2.png" />
+    <Content Include="Images\png\view.png" />
+    <Content Include="Images\png\volume-control-1.png" />
+    <Content Include="Images\png\volume-control.png" />
+    <Content Include="Images\png\warning.png" />
+    <Content Include="Images\png\wifi-1.png" />
+    <Content Include="Images\png\wifi.png" />
+    <Content Include="Images\png\windows-1.png" />
+    <Content Include="Images\png\windows-2.png" />
+    <Content Include="Images\png\windows-3.png" />
+    <Content Include="Images\png\windows-4.png" />
+    <Content Include="Images\png\windows.png" />
+    <Content Include="Images\png\wireless-internet.png" />
+    <Content Include="Images\png\worldwide-1.png" />
+    <Content Include="Images\png\worldwide.png" />
+    <Content Include="Images\png\zoom-in.png" />
+    <Content Include="Images\png\zoom-out.png" />
+    <Content Include="License-LGPL.txt" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\EmguCV.3.1.0.1\build\EmguCV.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\EmguCV.3.1.0.1\build\EmguCV.props'))" />
+    <Error Condition="!Exists('..\packages\EmguCV.3.1.0.1\build\EmguCV.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\EmguCV.3.1.0.1\build\EmguCV.targets'))" />
+  </Target>
+  <Import Project="..\packages\EmguCV.3.1.0.1\build\EmguCV.targets" Condition="Exists('..\packages\EmguCV.3.1.0.1\build\EmguCV.targets')" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
