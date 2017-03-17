@@ -11,5 +11,6 @@ close internet
 close browser
 take a selfie
 selfie
+show me the latest headlines
 exit
 close

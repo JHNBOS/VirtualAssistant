@@ -101,10 +101,10 @@ namespace VirtualAssistentApp
         }
 
         //OPEN DEFAULT BROWSER
-        private void openBrowser()
+        private void openBrowser(string url)
         {
             synthesizer.Speak("Starting browser ");
-            Process.Start("http:\\www.google.nl");
+            Process.Start(url);
         }
 
         //MINIMIZE OR MAXIMIZE BROWSER
@@ -205,7 +205,7 @@ namespace VirtualAssistentApp
 
                     case "go to internet":
                     case "go to google":
-                        openBrowser();
+                        openBrowser("http://www.google.nl");
                         break;
 
                     case "open internet":
@@ -223,6 +223,10 @@ namespace VirtualAssistentApp
                         capture = new Capture();
                         selfie = true;
                         Application.Idle += Application_Idle;
+                        break;
+
+                    case "show me the latest headlines":
+                        openBrowser("https://news.google.com/");
                         break;
 
                     case "close":
