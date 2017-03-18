@@ -1,21 +1,21 @@
-﻿using System;
+﻿using Emgu.CV;
+using System;
 using System.Diagnostics;
 using System.Drawing;
+using System.Drawing.Imaging;
+using System.IO;
 using System.Speech.Recognition;
 using System.Speech.Synthesis;
-using System.Windows.Forms;
-using Emgu.CV;
-using System.Drawing.Imaging;
-using System.Xml;
-using System.IO;
 using System.Threading;
+using System.Windows.Forms;
+using System.Xml;
 
 namespace VirtualAssistentApp
 {
     public partial class Form1 : Form
     {
         //OBJECTS
-        private SpeechRecognitionEngine recEngine = new SpeechRecognitionEngine();
+        private SpeechRecognitionEngine recEngine;
         private SpeechSynthesizer synthesizer = new SpeechSynthesizer();
         private Capture capture;
         private HandleProcess handler = new HandleProcess();
@@ -28,8 +28,8 @@ namespace VirtualAssistentApp
         private string City { get; set; }
         private string Query { get; set; }
         private bool minimized { get; set; }
-        private bool awake = false;
         private bool selfie = false;
+        private bool awake = false;
 
 
         public Form1()
@@ -37,7 +37,7 @@ namespace VirtualAssistentApp
             InitializeComponent();
 
             //INITIALIZING VARIABLES
-            City = "Rotterdam";
+            City = "Rotterdam, Netherlands";
             userName = "Johan Bos";
             string fname = userName.Split(' ')[0];
             minimized = false;
@@ -48,9 +48,9 @@ namespace VirtualAssistentApp
             //START RECOGNIZING
             recEngine.RecognizeAsync(RecognizeMode.Multiple);
 
+
             //SAY WELCOME TEXT
             synthesizer.SpeakAsync("Hello " + fname + ", how may I help you?");
-
         }
 
         //--------------------------------------------------------------------------------------------//
@@ -69,15 +69,15 @@ namespace VirtualAssistentApp
                 }
             }
 
-            //SET VOICE
-            synthesizer.SelectVoiceByHints(VoiceGender.Female);
+            //SET RECOGNIZER ENGINE
+            recEngine = new SpeechRecognitionEngine(recognizerInfo.Culture);
 
             //SELECT MICROPHONE
             recEngine.SetInputToDefaultAudioDevice();
 
             //SETUP POSSIBLE COMMANDS
             Choices commands = new Choices();
-            commands.Add(File.ReadAllLines(@"D:\Johan Bos\Documents\Visual Studio 2015\Projects\PersonalProjects\VirtualAssistentApp\commands.txt"));
+            commands.Add(File.ReadAllLines(@"C:\Github\VirtualAssistant\VirtualAssistentApp\commands.txt"));
 
             //GRAMMARBUILDER
             GrammarBuilder gBuilder = new GrammarBuilder();
@@ -85,12 +85,19 @@ namespace VirtualAssistentApp
             gBuilder.Append(commands);
 
             //GRAMMAR
-            Grammar grammar = new Grammar(gBuilder);
+            Grammar grammar = new Grammar(new GrammarBuilder(gBuilder, 0, 5));
 
             //RECOGNITION ENGINE
-            recEngine.RequestRecognizerUpdate();
-            recEngine.LoadGrammarAsync(grammar);
-            recEngine.SpeechRecognized += RecEngine_SpeechRecognized;
+            try
+            {
+                recEngine.RequestRecognizerUpdate();
+                recEngine.LoadGrammarAsync(grammar);
+                recEngine.SpeechRecognized += RecEngine_SpeechRecognized;
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex);
+            }
         }
 
         //EXIT PROGRAM
@@ -127,10 +134,10 @@ namespace VirtualAssistentApp
 
         }
 
-        //GET WEATHER FROM YAHOO
+        //GET WEATHER FROM GOOGLE
         private String GetWeather(String input)
         {
-            String query = String.Format("https://query.yahooapis.com/v1/public/yql?q=select * from weather.forecast where woeid in (select woeid from geo.places(1) where text='" + City + "')&format=xml&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys");
+            String query = String.Format("https://query.yahooapis.com/v1/public/yql?q=select * from weather.forecast where u='c' and woeid in (select woeid from geo.places(1) where text='" + City + "')&format=xml&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys");
             XmlDocument wData = new XmlDocument();
             try
             {
@@ -168,77 +175,117 @@ namespace VirtualAssistentApp
             return "error";
         }
 
+        private void killProgram(string app)
+        {
+            Process[] process = null;
+
+            try
+            {
+                process = Process.GetProcesses();
+
+                foreach (var p in process)
+                {
+                    if (p.ProcessName == app)
+                    {
+                        p.Kill();
+                        p.WaitForExit();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex);
+            }
+
+        }
+
         //--------------------------------------------------------------------------------------------//
         // LISTENERS
 
         //SPEECH RECOGNIZER LISTENER
         private void RecEngine_SpeechRecognized(object sender, SpeechRecognizedEventArgs e)
         {
-
-            if (e.Result.Text == "hey V A")
+            try
             {
-                awake = true;
-            }
+                string speech = e.Result.Text;
+                Debug.WriteLine("User said: " + speech);
 
-            else if (awake == true)
-            {
-                switch (e.Result.Text)
+                if (speech == "Hey Mary" || speech == "Mary")
                 {
-                    case "what date is it":
-                        synthesizer.Speak("Today is " + DateTime.Now.ToString("dd MMMM"));
-                        break;
-
-                    case "what time is it":
-                        synthesizer.Speak("The time is " + DateTime.Now.ToString("hh mm"));
-                        break;
-
-                    case "whats the weather like":
-                        synthesizer.Speak("The sky is " + GetWeather("cond").ToLower());
-                        break;
-
-                    case "whats the temperature":
-                        string temperature = GetWeather("temp");
-                        double temp = 5.0 / 9.0 * (double.Parse(temperature) - 32);
-
-                        synthesizer.Speak("The temperature is " + Math.Round(temp, 1) + " degrees Celsius");
-                        break;
-
-                    case "go to internet":
-                    case "go to google":
-                        openBrowser("http://www.google.nl");
-                        break;
-
-                    case "open internet":
-                    case "open browser":
-                        minimizeBrowser();
-                        break;
-
-                    case "close internet":
-                    case "close browser":
-                        minimizeBrowser();
-                        break;
-
-                    case "take a selfie":
-                    case "selfie":
-                        capture = new Capture();
-                        selfie = true;
-                        Application.Idle += Application_Idle;
-                        break;
-
-                    case "show me the latest headlines":
-                        openBrowser("https://news.google.com/");
-                        break;
-
-                    case "close":
-                    case "exit":
-                        Exit();
-                        break;
-
-                    default:
-                        break;
+                    awake = true;
+                    synthesizer.Speak("Whats up");
                 }
 
-                awake = false;
+                if (awake == true)
+                {
+                    switch (speech)
+                    {
+                        case "Open Word":
+                            Process.Start(@"C:\Program Files\Microsoft Office\root\Office16\WINWORD.EXE");
+                            break;
+
+                        case "Close Word":
+                            killProgram("WINWORD");
+                            break;
+
+                        case "Whats The Date":
+                            synthesizer.Speak("Today is " + DateTime.Now.ToString("dd MMMM"));
+                            break;
+
+                        case "Whats The Time":
+                            synthesizer.Speak("The time is " + DateTime.Now.ToString("HH mm"));
+                            break;
+
+                        case "Whats The Weather Like":
+                            synthesizer.Speak("The sky is " + GetWeather("cond").ToLower());
+                            break;
+
+                        case "Whats Todays Temperature":
+                            string temperature = GetWeather("temp");
+                            double temp = (double.Parse(temperature));
+
+                            synthesizer.Speak("The temperature is " + Math.Round(temp, 1) + " degrees Celsius");
+                            break;
+
+                        case "Go To Internet":
+                        case "Go To Google":
+                            openBrowser("http://www.google.nl");
+                            break;
+
+                        case "Open Internet":
+                        case "Open Browser":
+                            openBrowser("http://www.google.nl");
+                            break;
+
+                        case "Close Internet":
+                        case "Close Browser":
+                            minimizeBrowser();
+                            break;
+
+                        case "Take A Selfie":
+                        case "Selfie":
+                            capture = new Capture();
+                            selfie = true;
+                            Application.Idle += Application_Idle;
+                            break;
+
+                        case "Show Me The Latest Headlines":
+                            openBrowser("https://news.google.com/");
+                            break;
+
+                        case "Close":
+                        case "Exit":
+                            Exit();
+                            break;
+
+                        default:
+                            break;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex);
             }
         }
 
@@ -262,7 +309,7 @@ namespace VirtualAssistentApp
 
                 selfie = false;
             }
-            
+
         }
 
         //----------------------------------------------------------------------------------------//

@@ -1,16 +1,29 @@
-﻿hey V A
-whats the weather like
-whats the temperature
-what date is it
-what time is it
-go to internet
-open internet
-open browser
-go to google
-close internet
-close browser
-take a selfie
-selfie
-show me the latest headlines
-exit
-close
+﻿Open
+Office
+Word
+Whats
+Date
+Time
+Is
+It
+The
+Weather
+Like
+Temperature
+Go
+To
+Internet
+Google
+Todays
+Close
+Browser
+Take
+A
+Selfie
+Exit
+Show
+Me
+Latest
+Headlines
+Hey
+Mary
