@@ -46,7 +46,6 @@ namespace VirtualAssistentApp
             readSettings();
 
             //INITIALIZING VARIABLES
-            string fname = UserName.Split(' ')[0];
             minimized = false;
 
             //SET TOOLTIPS
@@ -61,7 +60,14 @@ namespace VirtualAssistentApp
             recEngine.RecognizeAsync(RecognizeMode.Multiple);
 
             //SAY WELCOME TEXT
-            synthesizer.SpeakAsync("Hello " + fname + ", how may I help you?");
+            if (UserName != null)
+            {
+                synthesizer.SpeakAsync("Hello " + UserName.Split(' ')[0] + ", how may I help you?");
+            }
+            else
+            {
+                synthesizer.SpeakAsync("Hello, how may I help you?");
+            }
         }
 
         //--------------------------------------------------------------------------------------------//
@@ -72,17 +78,20 @@ namespace VirtualAssistentApp
             var filename = @"C:\Github\VirtualAssistant\VirtualAssistentApp\settings.txt";
             var allLines = File.ReadAllLines(filename);
 
-            ArrayList settingsList = new ArrayList();
-
-            foreach (var line in allLines)
+            if (allLines.Length  > 0)
             {
-                var currentLine = line.Split(':')[1];
-                settingsList.Add(currentLine);
-            }
+                ArrayList settingsList = new ArrayList();
 
-            UserName = settingsList[0].ToString();
-            City = settingsList[1].ToString();
-            Country = settingsList[2].ToString();
+                foreach (var line in allLines)
+                {
+                    var currentLine = line.Split(':')[1];
+                    settingsList.Add(currentLine);
+                }
+
+                UserName = settingsList[0].ToString();
+                City = settingsList[1].ToString();
+                Country = settingsList[2].ToString();
+            }
         }
 
         private void setupSpeechRecognition()
@@ -279,6 +288,7 @@ namespace VirtualAssistentApp
 
                         case "Whats Todays Temperature":
                             string temperature = GetWeather("temp");
+                            Debug.WriteLine("Temperature: " + temperature);
                             double temp = (double.Parse(temperature));
 
                             synthesizer.Speak("The temperature is " + Math.Round(temp, 1) + " degrees Celsius");
@@ -366,6 +376,13 @@ namespace VirtualAssistentApp
         {
             ToolTip tt = new ToolTip();
             tt.SetToolTip(this.weatherBox, "Possible commands are: \n \n - What's the weather like? \n - What's todays temperature?");
+        }
+
+        private void btnSettings_Click(object sender, EventArgs e)
+        {
+            SettingsForm sf = new SettingsForm();
+            sf.Show();
+            sf.Activate();
         }
 
         //----------------------------------------------------------------------------------------//

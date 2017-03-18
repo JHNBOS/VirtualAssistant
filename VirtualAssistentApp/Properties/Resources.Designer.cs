@@ -63,6 +63,16 @@ namespace VirtualAssistentApp.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap background {
+            get {
+                object obj = ResourceManager.GetObject("background", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap cloud {
             get {
                 object obj = ResourceManager.GetObject("cloud", resourceCulture);
@@ -86,6 +96,16 @@ namespace VirtualAssistentApp.Properties {
         internal static System.Drawing.Bitmap photo_camera {
             get {
                 object obj = ResourceManager.GetObject("photo-camera", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap settings_4 {
+            get {
+                object obj = ResourceManager.GetObject("settings-4", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
