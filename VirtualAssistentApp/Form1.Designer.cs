@@ -35,9 +35,11 @@
             this.selfieBox = new System.Windows.Forms.PictureBox();
             this.label1 = new System.Windows.Forms.Label();
             this.btnSettings = new System.Windows.Forms.Button();
+            this.mediaBox = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.weatherBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.internetBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.selfieBox)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.mediaBox)).BeginInit();
             this.SuspendLayout();
             // 
             // title
@@ -59,9 +61,9 @@
             this.weatherBox.BackgroundImage = global::VirtualAssistentApp.Properties.Resources.cloud;
             this.weatherBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.weatherBox.InitialImage = ((System.Drawing.Image)(resources.GetObject("weatherBox.InitialImage")));
-            this.weatherBox.Location = new System.Drawing.Point(31, 93);
+            this.weatherBox.Location = new System.Drawing.Point(64, 89);
             this.weatherBox.Name = "weatherBox";
-            this.weatherBox.Size = new System.Drawing.Size(123, 119);
+            this.weatherBox.Size = new System.Drawing.Size(90, 90);
             this.weatherBox.TabIndex = 1;
             this.weatherBox.TabStop = false;
             // 
@@ -71,9 +73,9 @@
             this.internetBox.BackgroundImage = global::VirtualAssistentApp.Properties.Resources.internet;
             this.internetBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.internetBox.InitialImage = ((System.Drawing.Image)(resources.GetObject("internetBox.InitialImage")));
-            this.internetBox.Location = new System.Drawing.Point(220, 93);
+            this.internetBox.Location = new System.Drawing.Point(236, 89);
             this.internetBox.Name = "internetBox";
-            this.internetBox.Size = new System.Drawing.Size(123, 119);
+            this.internetBox.Size = new System.Drawing.Size(90, 90);
             this.internetBox.TabIndex = 2;
             this.internetBox.TabStop = false;
             // 
@@ -83,9 +85,9 @@
             this.selfieBox.BackgroundImage = global::VirtualAssistentApp.Properties.Resources.photo_camera;
             this.selfieBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.selfieBox.InitialImage = ((System.Drawing.Image)(resources.GetObject("selfieBox.InitialImage")));
-            this.selfieBox.Location = new System.Drawing.Point(407, 93);
+            this.selfieBox.Location = new System.Drawing.Point(407, 89);
             this.selfieBox.Name = "selfieBox";
-            this.selfieBox.Size = new System.Drawing.Size(123, 119);
+            this.selfieBox.Size = new System.Drawing.Size(90, 90);
             this.selfieBox.TabIndex = 3;
             this.selfieBox.TabStop = false;
             // 
@@ -95,7 +97,7 @@
             this.label1.BackColor = System.Drawing.Color.Transparent;
             this.label1.Font = new System.Drawing.Font("Quicksand", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.ForeColor = System.Drawing.Color.White;
-            this.label1.Location = new System.Drawing.Point(107, 243);
+            this.label1.Location = new System.Drawing.Point(112, 402);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(343, 33);
             this.label1.TabIndex = 4;
@@ -115,6 +117,18 @@
             this.btnSettings.UseVisualStyleBackColor = true;
             this.btnSettings.Click += new System.EventHandler(this.btnSettings_Click);
             // 
+            // mediaBox
+            // 
+            this.mediaBox.BackColor = System.Drawing.Color.Transparent;
+            this.mediaBox.BackgroundImage = global::VirtualAssistentApp.Properties.Resources.play_button_1;
+            this.mediaBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.mediaBox.InitialImage = ((System.Drawing.Image)(resources.GetObject("mediaBox.InitialImage")));
+            this.mediaBox.Location = new System.Drawing.Point(64, 216);
+            this.mediaBox.Name = "mediaBox";
+            this.mediaBox.Size = new System.Drawing.Size(90, 90);
+            this.mediaBox.TabIndex = 6;
+            this.mediaBox.TabStop = false;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 24F);
@@ -122,6 +136,7 @@
             this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(557, 455);
+            this.Controls.Add(this.mediaBox);
             this.Controls.Add(this.btnSettings);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.selfieBox);
@@ -138,6 +153,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.weatherBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.internetBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.selfieBox)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.mediaBox)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -151,6 +167,7 @@
         private System.Windows.Forms.PictureBox selfieBox;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button btnSettings;
+        private System.Windows.Forms.PictureBox mediaBox;
     }
 }
 

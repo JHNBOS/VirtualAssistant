@@ -11,6 +11,7 @@ using System.Speech.Synthesis;
 using System.Threading;
 using System.Windows.Forms;
 using System.Xml;
+using static System.Runtime.CompilerServices.RuntimeHelpers;
 
 namespace VirtualAssistentApp
 {
@@ -52,6 +53,7 @@ namespace VirtualAssistentApp
             weatherBox.MouseHover += WeatherBox_MouseHover;
             internetBox.MouseHover += InternetBox_MouseHover;
             selfieBox.MouseHover += SelfieBox_MouseHover;
+            mediaBox.MouseHover += MediaBox_MouseHover;
 
             //RUN METHODS
             setupSpeechRecognition();
@@ -62,7 +64,15 @@ namespace VirtualAssistentApp
             //SAY WELCOME TEXT
             if (UserName != null)
             {
-                synthesizer.SpeakAsync("Hello " + UserName.Split(' ')[0] + ", how may I help you?");
+                string[] greetings = new string[3];
+                greetings[0] = "Hello " + UserName.Split(' ')[0] + ", how may I help you?";
+                greetings[1] = "Yo, whats up," + UserName.Split(' ')[0];
+                greetings[2] = "Hey, how are you today?";
+
+                Random random = new Random();
+                int rndm = random.Next(0, 2);
+
+                synthesizer.SpeakAsync(greetings[rndm]);
             }
             else
             {
@@ -70,6 +80,7 @@ namespace VirtualAssistentApp
             }
         }
 
+       
         //--------------------------------------------------------------------------------------------//
         // METHODS
 
@@ -142,7 +153,15 @@ namespace VirtualAssistentApp
         //EXIT PROGRAM
         private void Exit()
         {
-            synthesizer.Speak("Have a nice day");
+            string[] goodbyes = new string[3];
+            goodbyes[0] = "Have a nice day";
+            goodbyes[1] = "See you later, alligator";
+            goodbyes[2] = "Yo, check you later";
+
+            Random random = new Random();
+            int rndm = random.Next(0, 2);
+
+            synthesizer.Speak(goodbyes[rndm]);
             Environment.Exit(0);
         }
 
@@ -266,13 +285,33 @@ namespace VirtualAssistentApp
 
                     switch (speech)
                     {
+                        //--------------------------------------------------------------------------------------//
+                        //----BEGIN OF APPLICATIONS---------------------------------------------------------------//
+
                         case "Open Word":
                             Process.Start(@"C:\Program Files\Microsoft Office\root\Office16\WINWORD.EXE");
                             break;
-
                         case "Close Word":
                             killProgram("WINWORD");
                             break;
+
+                        case "Open Excel":
+                            Process.Start(@"C:\Program Files\Microsoft Office\root\Office16\EXCEL.EXE");
+                            break;
+                        case "Close Excel":
+                            killProgram("EXCEL");
+                            break;
+
+                        case "Open Powerpoint":
+                            Process.Start(@"C:\Program Files\Microsoft Office\root\Office16\POWERPNT.EXE");
+                            break;
+                        case "Close Powerpoint":
+                            killProgram("POWERPNT");
+                            break;
+
+                        //----END OF APPLICATIONS---------------------------------------------------------------//
+                        //--------------------------------------------------------------------------------------//
+                        //----BEGIN OF INFORMATION---------------------------------------------------------------//
 
                         case "Whats The Date":
                             synthesizer.Speak("Today is " + DateTime.Now.ToString("dd MMMM"));
@@ -294,9 +333,21 @@ namespace VirtualAssistentApp
                             synthesizer.Speak("The temperature is " + Math.Round(temp, 1) + " degrees Celsius");
                             break;
 
+                        //----END OF INFORMATION---------------------------------------------------------------//
+                        //--------------------------------------------------------------------------------------//
+                        //----BEGIN OF INTERNET---------------------------------------------------------------//
+
                         case "Go To Internet":
                         case "Go To Google":
                             openBrowser("http://www.google.nl");
+                            break;
+
+                        case "Go To Facebook":
+                            openBrowser("https://facebook.com");
+                            break;
+
+                        case "Login":
+                            SendKeys.Send("{ENTER}");
                             break;
 
                         case "Open Internet":
@@ -309,6 +360,14 @@ namespace VirtualAssistentApp
                             minimizeBrowser();
                             break;
 
+                        case "Show Me The Latest Headlines":
+                            openBrowser("https://news.google.com/");
+                            break;
+
+                        //----END OF INTERNET---------------------------------------------------------------//
+                        //--------------------------------------------------------------------------------------//
+                        //----BEGIN OF ENTERTAINMENT---------------------------------------------------------------//
+
                         case "Take A Selfie":
                         case "Selfie":
                             capture = new Capture();
@@ -316,9 +375,36 @@ namespace VirtualAssistentApp
                             Application.Idle += Application_Idle;
                             break;
 
-                        case "Show Me The Latest Headlines":
-                            openBrowser("https://news.google.com/");
+                        case "Open Media Player":
+                            Process.Start(@"C:\Program Files (x86)\Windows Media Player\wmplayer.exe");
                             break;
+                        case "Close Media Player":
+                            killProgram("wmplayer");
+                            break;
+
+                        case "Open Fun X":
+                            openBrowser("http://radioplayer.npo.nl/funx/?channel=null");
+                            break;
+
+                        case "Open You Tjub":
+                            openBrowser("https://youtube.com");
+                            break;
+
+                        case "Open Radio":
+                            openBrowser("http://nederland.fm/");
+                            break;
+
+                        case "Play":
+                            SendKeys.Send("^( )");
+                            break;
+
+                        case "Pause":
+                            SendKeys.Send("^( )");
+                            break;
+
+                        //----END OF ENTERTAINMENT---------------------------------------------------------------//
+                        //--------------------------------------------------------------------------------------//
+                        //----BEGIN OF SYSTEM---------------------------------------------------------------//
 
                         case "Close":
                         case "Exit":
@@ -326,8 +412,13 @@ namespace VirtualAssistentApp
                             Exit();
                             break;
 
+                        //----END OF SYSTEM---------------------------------------------------------------//
+                        //--------------------------------------------------------------------------------------//
+
                         default:
                             break;
+
+                        //--------------------------------------------------------------------------------------//
                     }
                 }
             }
@@ -369,15 +460,26 @@ namespace VirtualAssistentApp
         private void InternetBox_MouseHover(object sender, EventArgs e)
         {
             ToolTip tt = new ToolTip();
-            tt.SetToolTip(this.internetBox, "Possible commands are: \n \n - Open Browser/Internet \n - Go to Internet/Google \n - Close Browser/Internet");
+            tt.SetToolTip(this.internetBox, "Possible commands are: \n \n - Open Browser/Internet \n" 
+                + " - Go to Internet/Google/Facebook \n - Close Browser/Internet \n"
+                + " - When 'Remember Me?' Enabled, Use Login");
         }
 
         private void WeatherBox_MouseHover(object sender, EventArgs e)
         {
             ToolTip tt = new ToolTip();
-            tt.SetToolTip(this.weatherBox, "Possible commands are: \n \n - What's the weather like? \n - What's todays temperature?");
+            tt.SetToolTip(this.weatherBox, "Possible commands are: \n \n - What's the weather like? \n"
+                + " - What's todays temperature?");
         }
 
+        private void MediaBox_MouseHover(object sender, EventArgs e)
+        {
+            ToolTip tt = new ToolTip();
+            tt.SetToolTip(this.mediaBox, "Possible commands are: \n \n - Open Radio \n - Open FunX \n"
+                + " - Open Media Player \n - Open YouTube \n - Play \n - Pause \n");
+        }
+
+        //SETTINGS BUTTON
         private void btnSettings_Click(object sender, EventArgs e)
         {
             SettingsForm sf = new SettingsForm();
