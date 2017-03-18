@@ -1,5 +1,7 @@
 ﻿using Emgu.CV;
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Imaging;
@@ -22,11 +24,15 @@ namespace VirtualAssistentApp
         private Bitmap image;
 
         //PRIMITIVE TYPES
-        private string userName { get; set; }
-        private string temperature { get; set; }
-        private string condition { get; set; }
+        private string UserName { get; set; }
         private string City { get; set; }
+        public string Country { get; set; }
+
+        private string Temperature { get; set; }
+        private string Condition { get; set; }
+
         private string Query { get; set; }
+
         private bool minimized { get; set; }
         private bool selfie = false;
         private bool awake = false;
@@ -36,11 +42,17 @@ namespace VirtualAssistentApp
         {
             InitializeComponent();
 
+            //READ SETTINGS
+            readSettings();
+
             //INITIALIZING VARIABLES
-            City = "Rotterdam, Netherlands";
-            userName = "Johan Bos";
-            string fname = userName.Split(' ')[0];
+            string fname = UserName.Split(' ')[0];
             minimized = false;
+
+            //SET TOOLTIPS
+            weatherBox.MouseHover += WeatherBox_MouseHover;
+            internetBox.MouseHover += InternetBox_MouseHover;
+            selfieBox.MouseHover += SelfieBox_MouseHover;
 
             //RUN METHODS
             setupSpeechRecognition();
@@ -48,13 +60,30 @@ namespace VirtualAssistentApp
             //START RECOGNIZING
             recEngine.RecognizeAsync(RecognizeMode.Multiple);
 
-
             //SAY WELCOME TEXT
             synthesizer.SpeakAsync("Hello " + fname + ", how may I help you?");
         }
 
         //--------------------------------------------------------------------------------------------//
         // METHODS
+
+        private void readSettings()
+        {
+            var filename = @"C:\Github\VirtualAssistant\VirtualAssistentApp\settings.txt";
+            var allLines = File.ReadAllLines(filename);
+
+            ArrayList settingsList = new ArrayList();
+
+            foreach (var line in allLines)
+            {
+                var currentLine = line.Split(':')[1];
+                settingsList.Add(currentLine);
+            }
+
+            UserName = settingsList[0].ToString();
+            City = settingsList[1].ToString();
+            Country = settingsList[2].ToString();
+        }
 
         private void setupSpeechRecognition()
         {
@@ -71,6 +100,7 @@ namespace VirtualAssistentApp
 
             //SET RECOGNIZER ENGINE
             recEngine = new SpeechRecognitionEngine(recognizerInfo.Culture);
+            recEngine.BabbleTimeout = TimeSpan.FromSeconds(3.2);
 
             //SELECT MICROPHONE
             recEngine.SetInputToDefaultAudioDevice();
@@ -137,8 +167,11 @@ namespace VirtualAssistentApp
         //GET WEATHER FROM GOOGLE
         private String GetWeather(String input)
         {
-            String query = String.Format("https://query.yahooapis.com/v1/public/yql?q=select * from weather.forecast where u='c' and woeid in (select woeid from geo.places(1) where text='" + City + "')&format=xml&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys");
             XmlDocument wData = new XmlDocument();
+            String query = String.Format("https://query.yahooapis.com/v1/public/yql?q="
+                + "select * from weather.forecast where u='c' and woeid in (select woeid from geo.places(1) where "
+                + "text='" + City + ", " + Country + "')&format=xml&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys");
+
             try
             {
                 wData.Load(query);
@@ -148,33 +181,37 @@ namespace VirtualAssistentApp
                 MessageBox.Show("No Internet connection!");
                 return "No internet";
             }
+
             XmlNamespaceManager manager = new XmlNamespaceManager(wData.NameTable);
             manager.AddNamespace("yweather", "http://xml.weather.yahoo.com/ns/rss/1.0");
 
             XmlNode channel = wData.SelectSingleNode("query").SelectSingleNode("results").SelectSingleNode("channel");
             XmlNodeList nodes = wData.SelectNodes("query/results/channel");
+
             try
             {
-                temperature = channel.SelectSingleNode("item").SelectSingleNode("yweather:condition", manager).Attributes["temp"].Value;
-                condition = channel.SelectSingleNode("item").SelectSingleNode("yweather:condition", manager).Attributes["text"].Value;
+                Temperature = channel.SelectSingleNode("item").SelectSingleNode("yweather:condition", manager).Attributes["temp"].Value;
+                Condition = channel.SelectSingleNode("item").SelectSingleNode("yweather:condition", manager).Attributes["text"].Value;
 
                 if (input == "temp")
                 {
-                    return temperature;
+                    return Temperature;
                 }
 
                 if (input == "cond")
                 {
-                    return condition;
+                    return Condition;
                 }
             }
             catch
             {
                 return "Error Receiving data";
             }
+
             return "error";
         }
 
+        //Kill process
         private void killProgram(string app)
         {
             Process[] process = null;
@@ -196,7 +233,6 @@ namespace VirtualAssistentApp
             {
                 Debug.WriteLine(ex);
             }
-
         }
 
         //--------------------------------------------------------------------------------------------//
@@ -218,6 +254,7 @@ namespace VirtualAssistentApp
 
                 if (awake == true)
                 {
+
                     switch (speech)
                     {
                         case "Open Word":
@@ -275,6 +312,7 @@ namespace VirtualAssistentApp
 
                         case "Close":
                         case "Exit":
+                        case "Goodbye":
                             Exit();
                             break;
 
@@ -309,7 +347,25 @@ namespace VirtualAssistentApp
 
                 selfie = false;
             }
+        }
 
+        //SHOW TOOLTIPS WHEN HOVERING OVER ICONS
+        private void SelfieBox_MouseHover(object sender, EventArgs e)
+        {
+            ToolTip tt = new ToolTip();
+            tt.SetToolTip(this.selfieBox, "Possible commands are: \n \n - Take A Selfie \n - Selfie");
+        }
+
+        private void InternetBox_MouseHover(object sender, EventArgs e)
+        {
+            ToolTip tt = new ToolTip();
+            tt.SetToolTip(this.internetBox, "Possible commands are: \n \n - Open Browser/Internet \n - Go to Internet/Google \n - Close Browser/Internet");
+        }
+
+        private void WeatherBox_MouseHover(object sender, EventArgs e)
+        {
+            ToolTip tt = new ToolTip();
+            tt.SetToolTip(this.weatherBox, "Possible commands are: \n \n - What's the weather like? \n - What's todays temperature?");
         }
 
         //----------------------------------------------------------------------------------------//

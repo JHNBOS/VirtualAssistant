@@ -21,6 +21,7 @@ Take
 A
 Selfie
 Exit
+Goodbye
 Show
 Me
 Latest

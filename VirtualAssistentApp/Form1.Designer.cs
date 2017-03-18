@@ -33,6 +33,7 @@
             this.weatherBox = new System.Windows.Forms.PictureBox();
             this.internetBox = new System.Windows.Forms.PictureBox();
             this.selfieBox = new System.Windows.Forms.PictureBox();
+            this.label1 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.weatherBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.internetBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.selfieBox)).BeginInit();
@@ -87,6 +88,18 @@
             this.selfieBox.TabIndex = 3;
             this.selfieBox.TabStop = false;
             // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.BackColor = System.Drawing.Color.Transparent;
+            this.label1.Font = new System.Drawing.Font("Quicksand", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.ForeColor = System.Drawing.Color.White;
+            this.label1.Location = new System.Drawing.Point(107, 243);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(343, 33);
+            this.label1.TabIndex = 4;
+            this.label1.Text = "Start Mary By saying \"Hey Mary\"";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 24F);
@@ -94,6 +107,7 @@
             this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(557, 455);
+            this.Controls.Add(this.label1);
             this.Controls.Add(this.selfieBox);
             this.Controls.Add(this.internetBox);
             this.Controls.Add(this.weatherBox);
@@ -109,6 +123,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.internetBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.selfieBox)).EndInit();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -118,6 +133,7 @@
         private System.Windows.Forms.PictureBox weatherBox;
         private System.Windows.Forms.PictureBox internetBox;
         private System.Windows.Forms.PictureBox selfieBox;
+        private System.Windows.Forms.Label label1;
     }
 }
 
