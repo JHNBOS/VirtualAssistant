@@ -1,3 +1,5 @@
 Name:Johan
 City:Rotterdam
 Country:Netherlands
+Gender:Female
+BotName:Mary

@@ -1,6 +1,6 @@
 ﻿namespace VirtualAssistentApp
 {
-    partial class Form1
+    partial class MainForm
     {
         /// <summary>
         /// Required designer variable.
@@ -28,14 +28,15 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.title = new System.Windows.Forms.Label();
             this.weatherBox = new System.Windows.Forms.PictureBox();
             this.internetBox = new System.Windows.Forms.PictureBox();
             this.selfieBox = new System.Windows.Forms.PictureBox();
-            this.label1 = new System.Windows.Forms.Label();
+            this.explainLabel = new System.Windows.Forms.Label();
             this.btnSettings = new System.Windows.Forms.Button();
             this.mediaBox = new System.Windows.Forms.PictureBox();
+            this.btnAddCommand = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.weatherBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.internetBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.selfieBox)).BeginInit();
@@ -91,17 +92,16 @@
             this.selfieBox.TabIndex = 3;
             this.selfieBox.TabStop = false;
             // 
-            // label1
+            // explainLabel
             // 
-            this.label1.AutoSize = true;
-            this.label1.BackColor = System.Drawing.Color.Transparent;
-            this.label1.Font = new System.Drawing.Font("Quicksand", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.ForeColor = System.Drawing.Color.White;
-            this.label1.Location = new System.Drawing.Point(112, 402);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(343, 33);
-            this.label1.TabIndex = 4;
-            this.label1.Text = "Start Mary By saying \"Hey Mary\"";
+            this.explainLabel.BackColor = System.Drawing.Color.Transparent;
+            this.explainLabel.Font = new System.Drawing.Font("Quicksand", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.explainLabel.ForeColor = System.Drawing.Color.White;
+            this.explainLabel.Location = new System.Drawing.Point(58, 402);
+            this.explainLabel.Name = "explainLabel";
+            this.explainLabel.Size = new System.Drawing.Size(369, 33);
+            this.explainLabel.TabIndex = 4;
+            this.explainLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // btnSettings
             // 
@@ -129,6 +129,20 @@
             this.mediaBox.TabIndex = 6;
             this.mediaBox.TabStop = false;
             // 
+            // btnAddCommand
+            // 
+            this.btnAddCommand.BackColor = System.Drawing.Color.Transparent;
+            this.btnAddCommand.BackgroundImage = global::VirtualAssistentApp.Properties.Resources.add;
+            this.btnAddCommand.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.btnAddCommand.FlatAppearance.BorderSize = 0;
+            this.btnAddCommand.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnAddCommand.Location = new System.Drawing.Point(433, 402);
+            this.btnAddCommand.Name = "btnAddCommand";
+            this.btnAddCommand.Size = new System.Drawing.Size(53, 41);
+            this.btnAddCommand.TabIndex = 7;
+            this.btnAddCommand.UseVisualStyleBackColor = true;
+            this.btnAddCommand.Click += new System.EventHandler(this.btnAddCommand_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 24F);
@@ -136,9 +150,10 @@
             this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(557, 455);
+            this.Controls.Add(this.btnAddCommand);
             this.Controls.Add(this.mediaBox);
             this.Controls.Add(this.btnSettings);
-            this.Controls.Add(this.label1);
+            this.Controls.Add(this.explainLabel);
             this.Controls.Add(this.selfieBox);
             this.Controls.Add(this.internetBox);
             this.Controls.Add(this.weatherBox);
@@ -155,7 +170,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.selfieBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.mediaBox)).EndInit();
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
@@ -165,9 +179,10 @@
         private System.Windows.Forms.PictureBox weatherBox;
         private System.Windows.Forms.PictureBox internetBox;
         private System.Windows.Forms.PictureBox selfieBox;
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label explainLabel;
         private System.Windows.Forms.Button btnSettings;
         private System.Windows.Forms.PictureBox mediaBox;
+        private System.Windows.Forms.Button btnAddCommand;
     }
 }
 

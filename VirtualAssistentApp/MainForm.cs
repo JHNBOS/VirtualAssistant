@@ -15,7 +15,7 @@ using static System.Runtime.CompilerServices.RuntimeHelpers;
 
 namespace VirtualAssistentApp
 {
-    public partial class Form1 : Form
+    public partial class MainForm : Form
     {
         //OBJECTS
         private SpeechRecognitionEngine recEngine;
@@ -27,7 +27,8 @@ namespace VirtualAssistentApp
         //PRIMITIVE TYPES
         private string UserName { get; set; }
         private string City { get; set; }
-        public string Country { get; set; }
+        private string Country { get; set; }
+        private string BotName { get; set; }
 
         private string Temperature { get; set; }
         private string Condition { get; set; }
@@ -39,7 +40,7 @@ namespace VirtualAssistentApp
         private bool awake = false;
 
 
-        public Form1()
+        public MainForm()
         {
             InitializeComponent();
 
@@ -48,12 +49,15 @@ namespace VirtualAssistentApp
 
             //INITIALIZING VARIABLES
             minimized = false;
+            explainLabel.Text = "Start By Saying 'Hey " + BotName + "'";
 
             //SET TOOLTIPS
             weatherBox.MouseHover += WeatherBox_MouseHover;
             internetBox.MouseHover += InternetBox_MouseHover;
             selfieBox.MouseHover += SelfieBox_MouseHover;
             mediaBox.MouseHover += MediaBox_MouseHover;
+            btnSettings.MouseHover += BtnSettings_MouseHover;
+            btnAddCommand.MouseHover += BtnAddCommand_MouseHover;
 
             //RUN METHODS
             setupSpeechRecognition();
@@ -64,13 +68,14 @@ namespace VirtualAssistentApp
             //SAY WELCOME TEXT
             if (UserName != null)
             {
-                string[] greetings = new string[3];
+                string[] greetings = new string[4];
                 greetings[0] = "Hello " + UserName.Split(' ')[0] + ", how may I help you?";
                 greetings[1] = "Yo, whats up," + UserName.Split(' ')[0];
                 greetings[2] = "Hey, how are you today?";
+                greetings[3] = "Ey, what up homeboy?";
 
                 Random random = new Random();
-                int rndm = random.Next(0, 2);
+                int rndm = random.Next(0, 3);
 
                 synthesizer.SpeakAsync(greetings[rndm]);
             }
@@ -102,6 +107,22 @@ namespace VirtualAssistentApp
                 UserName = settingsList[0].ToString();
                 City = settingsList[1].ToString();
                 Country = settingsList[2].ToString();
+                string gender = settingsList[3].ToString();
+
+                if (gender == "Male")
+                {
+                    synthesizer.SelectVoiceByHints(VoiceGender.Male);
+                }
+                else if (gender == "Female")
+                {
+                    synthesizer.SelectVoiceByHints(VoiceGender.Female);
+                }
+                else
+                {
+                    synthesizer.SelectVoiceByHints(VoiceGender.Female);
+                }
+
+                BotName = settingsList[4].ToString();
             }
         }
 
@@ -274,7 +295,7 @@ namespace VirtualAssistentApp
                 string speech = e.Result.Text;
                 Debug.WriteLine("User said: " + speech);
 
-                if (speech == "Hey Mary" || speech == "Mary")
+                if (speech == "Hey " + BotName || speech == BotName)
                 {
                     awake = true;
                     synthesizer.Speak("Whats up");
@@ -479,12 +500,33 @@ namespace VirtualAssistentApp
                 + " - Open Media Player \n - Open YouTube \n - Play \n - Pause \n");
         }
 
+        private void BtnSettings_MouseHover(object sender, EventArgs e)
+        {
+            ToolTip tt = new ToolTip();
+            tt.SetToolTip(this.btnSettings, "Open Settings");
+        }
+
+        private void BtnAddCommand_MouseHover(object sender, EventArgs e)
+        {
+            ToolTip tt = new ToolTip();
+            tt.SetToolTip(this.btnAddCommand, "Add New Command");
+        }
+
         //SETTINGS BUTTON
         private void btnSettings_Click(object sender, EventArgs e)
         {
             SettingsForm sf = new SettingsForm();
+            this.Hide();
             sf.Show();
             sf.Activate();
+        }
+
+        private void btnAddCommand_Click(object sender, EventArgs e)
+        {
+            AddCommandForm af = new AddCommandForm();
+            this.Hide();
+            af.Show();
+            af.Activate();
         }
 
         //----------------------------------------------------------------------------------------//
