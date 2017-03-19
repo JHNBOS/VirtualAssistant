@@ -163,18 +163,12 @@ namespace VirtualAssistentApp
             {
                 recEngine.RequestRecognizerUpdate();
                 recEngine.LoadGrammarAsync(grammar);
-                recEngine.LoadGrammarCompleted += RecEngine_LoadGrammarCompleted;
                 recEngine.SpeechRecognized += RecEngine_SpeechRecognized;
             }
             catch (Exception ex)
             {
                 Debug.WriteLine(ex);
             }
-        }
-
-        private void RecEngine_LoadGrammarCompleted(object sender, LoadGrammarCompletedEventArgs e)
-        {
-            MessageBox.Show("Grammar loaded!");
         }
 
         //EXIT PROGRAM
@@ -290,6 +284,34 @@ namespace VirtualAssistentApp
             }
         }
 
+        //SEARCH
+        private void startSearch(bool image)
+        {
+            if (image == true)
+            {
+                synthesizer.Speak("For what would you like to search images of?");
+            }
+            else
+            {
+                synthesizer.Speak("For what would you like to search for?");
+            }
+
+            RecognitionResult r = recEngine.Recognize();
+            Query = r.Text.ToString();
+
+            //START SEARCH BASED ON IMAGE OR NOT
+            if (image == true && Query != "")
+            {
+                openBrowser("http://www.google.nl/images?q=" + Uri.EscapeDataString(Query));
+            }
+            else
+            {
+                openBrowser("http://www.google.nl/search?q=" + Uri.EscapeDataString(Query));
+            }
+
+            recEngine.RecognizeAsync(RecognizeMode.Multiple);
+        }
+
         //--------------------------------------------------------------------------------------------//
         // LISTENERS
 
@@ -312,12 +334,16 @@ namespace VirtualAssistentApp
 
                     if ((speech.StartsWith("Search For") || speech.StartsWith("search for")) && !speech.Contains("images"))
                     {
-                        openBrowser("http://www.google.nl/search?q=" + Uri.EscapeDataString(speech.Substring(11)));
+                        recEngine.RecognizeAsyncStop();
+
+                        startSearch(false);
                     }
 
-                    if (speech.StartsWith("Search For Images Of") || speech.StartsWith("search for images of"))
+                    if (speech.StartsWith("Search For Images") || speech.StartsWith("search for images"))
                     {
-                        openBrowser("http://www.google.nl/images?q=" + Uri.EscapeDataString(speech.Substring(21)));
+                        recEngine.RecognizeAsyncStop();
+
+                        startSearch(true);
                     }
 
                     switch (speech)
@@ -442,6 +468,10 @@ namespace VirtualAssistentApp
                         //----END OF ENTERTAINMENT---------------------------------------------------------------//
                         //--------------------------------------------------------------------------------------//
                         //----BEGIN OF SYSTEM---------------------------------------------------------------//
+
+                        case "Bitch":
+                            synthesizer.Speak("You Are Da Bitch, Nigga");
+                            break;
 
                         case "Close":
                         case "Exit":
