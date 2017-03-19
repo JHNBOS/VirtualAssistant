@@ -552,6 +552,7 @@
     <Content Include="Images\png\zoom-out.png" />
     <Content Include="License-LGPL.txt" />
     <Content Include="settings.txt" />
+    <Content Include="words.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

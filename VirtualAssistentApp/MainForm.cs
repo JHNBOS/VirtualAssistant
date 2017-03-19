@@ -163,12 +163,18 @@ namespace VirtualAssistentApp
             {
                 recEngine.RequestRecognizerUpdate();
                 recEngine.LoadGrammarAsync(grammar);
+                recEngine.LoadGrammarCompleted += RecEngine_LoadGrammarCompleted;
                 recEngine.SpeechRecognized += RecEngine_SpeechRecognized;
             }
             catch (Exception ex)
             {
                 Debug.WriteLine(ex);
             }
+        }
+
+        private void RecEngine_LoadGrammarCompleted(object sender, LoadGrammarCompletedEventArgs e)
+        {
+            MessageBox.Show("Grammar loaded!");
         }
 
         //EXIT PROGRAM
@@ -304,6 +310,16 @@ namespace VirtualAssistentApp
                 if (awake == true)
                 {
 
+                    if ((speech.StartsWith("Search For") || speech.StartsWith("search for")) && !speech.Contains("images"))
+                    {
+                        openBrowser("http://www.google.nl/search?q=" + Uri.EscapeDataString(speech.Substring(11)));
+                    }
+
+                    if (speech.StartsWith("Search For Images Of") || speech.StartsWith("search for images of"))
+                    {
+                        openBrowser("http://www.google.nl/images?q=" + Uri.EscapeDataString(speech.Substring(21)));
+                    }
+
                     switch (speech)
                     {
                         //--------------------------------------------------------------------------------------//
@@ -346,7 +362,7 @@ namespace VirtualAssistentApp
                             synthesizer.Speak("The sky is " + GetWeather("cond").ToLower());
                             break;
 
-                        case "Whats Todays Temperature":
+                        case "Whats The Temperature":
                             string temperature = GetWeather("temp");
                             Debug.WriteLine("Temperature: " + temperature);
                             double temp = (double.Parse(temperature));
@@ -490,7 +506,7 @@ namespace VirtualAssistentApp
         {
             ToolTip tt = new ToolTip();
             tt.SetToolTip(this.weatherBox, "Possible commands are: \n \n - What's the weather like? \n"
-                + " - What's todays temperature?");
+                + " - What's the temperature?");
         }
 
         private void MediaBox_MouseHover(object sender, EventArgs e)
