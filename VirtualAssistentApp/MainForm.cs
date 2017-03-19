@@ -23,6 +23,8 @@ namespace VirtualAssistentApp
         private Capture capture;
         private HandleProcess handler = new HandleProcess();
         private Bitmap image;
+        private Grammar grammar;
+        private GrammarBuilder gBuilder;
 
         //PRIMITIVE TYPES
         private string UserName { get; set; }
@@ -151,12 +153,12 @@ namespace VirtualAssistentApp
             commands.Add(File.ReadAllLines(@"C:\Github\VirtualAssistant\VirtualAssistentApp\commands.txt"));
 
             //GRAMMARBUILDER
-            GrammarBuilder gBuilder = new GrammarBuilder();
+            gBuilder = new GrammarBuilder();
             gBuilder.Culture = recognizerInfo.Culture;
             gBuilder.Append(commands);
 
             //GRAMMAR
-            Grammar grammar = new Grammar(new GrammarBuilder(gBuilder, 0, 5));
+            grammar = new Grammar(new GrammarBuilder(gBuilder, 0, 5));
 
             //RECOGNITION ENGINE
             try
@@ -287,29 +289,60 @@ namespace VirtualAssistentApp
         //SEARCH
         private void startSearch(bool image)
         {
-            if (image == true)
+            try
             {
-                synthesizer.Speak("For what would you like to search images of?");
-            }
-            else
-            {
-                synthesizer.Speak("For what would you like to search for?");
-            }
+                recEngine.UnloadAllGrammars();
 
-            RecognitionResult r = recEngine.Recognize();
-            Query = r.Text.ToString();
+                Choices search = new Choices();
+                search.Add(File.ReadAllLines(@"C:\Github\VirtualAssistant\VirtualAssistentApp\words.txt"));
 
-            //START SEARCH BASED ON IMAGE OR NOT
-            if (image == true && Query != "")
-            {
-                openBrowser("http://www.google.nl/images?q=" + Uri.EscapeDataString(Query));
-            }
-            else
-            {
-                openBrowser("http://www.google.nl/search?q=" + Uri.EscapeDataString(Query));
-            }
+                gBuilder = new GrammarBuilder();
+                gBuilder.Append(search);
+                grammar = new Grammar(new GrammarBuilder(gBuilder, 0, 5));
 
-            recEngine.RecognizeAsync(RecognizeMode.Multiple);
+                recEngine.LoadGrammar(grammar);
+
+
+                if (image == true)
+                {
+                    synthesizer.Speak("For what would you like to search images of?");
+                }
+                else
+                {
+                    synthesizer.Speak("For what would you like to search for?");
+                }
+
+                RecognitionResult r = recEngine.Recognize();
+                Query = r.Text.ToString();
+
+                //START SEARCH BASED ON IMAGE OR NOT
+                if (image == true && Query != "")
+                {
+                    openBrowser("http://www.google.nl/images?q=" + Uri.EscapeDataString(Query));
+                }
+                else
+                {
+                    openBrowser("http://www.google.nl/search?q=" + Uri.EscapeDataString(Query));
+                }
+
+
+                recEngine.UnloadAllGrammars();
+
+                Choices commands = new Choices();
+                commands.Add(File.ReadAllLines(@"C:\Github\VirtualAssistant\VirtualAssistentApp\commands.txt"));
+
+                gBuilder = new GrammarBuilder();
+                gBuilder.Append(commands);
+                grammar = new Grammar(new GrammarBuilder(gBuilder, 0, 5));
+
+                recEngine.LoadGrammar(grammar);
+                recEngine.RecognizeAsync(RecognizeMode.Multiple);
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex);
+            }
+            
         }
 
         //--------------------------------------------------------------------------------------------//
@@ -470,8 +503,9 @@ namespace VirtualAssistentApp
                         //----BEGIN OF SYSTEM---------------------------------------------------------------//
 
                         case "Bitch":
-                            synthesizer.Speak("You Are Da Bitch, Nigga");
+                            synthesizer.Speak("You Are The Bitch");
                             break;
+
 
                         case "Close":
                         case "Exit":
