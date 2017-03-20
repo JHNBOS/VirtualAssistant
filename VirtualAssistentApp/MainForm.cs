@@ -444,17 +444,20 @@ namespace VirtualAssistentApp
                 string speech = e.Result.Text;
                 Debug.WriteLine("User said: " + speech);
 
+                //CHECK IF AWAKE IS NEEDED
                 if (UseAwake == false)
                 {
                     isAwake = true;
                 }
 
-                if (speech == "Hey " + BotName || speech == BotName && isAwake == false)
+                //AWAKE PROGRAM
+                if (speech == "Hey " + BotName || speech == BotName)
                 {
                     isAwake = true;
                     synthesizer.Speak("Whats up");
                 }
 
+                //WHEN READING TEXT, SAY STOP TO CANCEL SPEAK
                 if (speech == "Stop")
                 {
                     var current = synthesizer.GetCurrentlySpokenPrompt();
@@ -465,7 +468,7 @@ namespace VirtualAssistentApp
                     }
                 }
 
-                if (isAwake != true)
+                if (isAwake == true)
                 {
 
                     if ((speech.StartsWith("Search For") || speech.StartsWith("search for")) && !speech.Contains("images"))
@@ -556,6 +559,10 @@ namespace VirtualAssistentApp
                         case "Go To Internet":
                         case "Go To Google":
                             openBrowser("http://www.google.nl");
+                            break;
+
+                        case "Go To G Mail":
+                            openBrowser("https://gmail.com");
                             break;
 
                         case "Go To Facebook":
@@ -708,7 +715,8 @@ namespace VirtualAssistentApp
             ToolTip tt = new ToolTip();
             tt.SetToolTip(this.internetBox, "Possible commands are: \n \n - Open Browser/Internet \n"
                 + " - Go to Internet/Google/Facebook \n - Close Browser/Internet \n"
-                + " - When 'Remember Me?' Enabled, Use 'Login'");
+                + " - When 'Remember Me?' Enabled, Use 'Login' \n"
+                + " - Go To Gmail \n");
         }
 
         private void WeatherBox_MouseHover(object sender, EventArgs e)
@@ -728,7 +736,8 @@ namespace VirtualAssistentApp
         private void AppBox_MouseHover(object sender, EventArgs e)
         {
             ToolTip tt = new ToolTip();
-            tt.SetToolTip(this.appBox, "Possible commands are: \n \n ");
+            tt.SetToolTip(this.appBox, "Possible commands are: \n \n - Open Visual Studio"
+                + " - Save(when in VS)");
         }
 
         private void OfficeBox_MouseHover(object sender, EventArgs e)

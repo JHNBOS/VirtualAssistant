@@ -11,6 +11,7 @@ Exit
 Facebook
 For
 Fun X
+G
 Go
 Goodbye
 Google
@@ -26,6 +27,7 @@ Latest
 Like
 Log
 Login
+Mail
 Mary
 Me
 Media
@@ -65,6 +67,7 @@ Who
 Word
 You
 YouTubeMary
+Mary
 Mary
 Mary
 Mary
