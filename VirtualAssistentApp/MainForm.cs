@@ -1,7 +1,6 @@
 ﻿using Emgu.CV;
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Imaging;
@@ -11,7 +10,6 @@ using System.Speech.Synthesis;
 using System.Threading;
 using System.Windows.Forms;
 using System.Xml;
-using static System.Runtime.CompilerServices.RuntimeHelpers;
 
 namespace VirtualAssistentApp
 {
@@ -24,7 +22,6 @@ namespace VirtualAssistentApp
         private HandleProcess handler = new HandleProcess();
         private Bitmap image;
         private Grammar grammar;
-        private GrammarBuilder gBuilder;
 
         //PRIMITIVE TYPES
         private string UserName { get; set; }
@@ -39,7 +36,6 @@ namespace VirtualAssistentApp
 
         private bool minimized { get; set; }
         private bool selfie = false;
-        private bool awake = false;
 
 
         public MainForm()
@@ -51,13 +47,16 @@ namespace VirtualAssistentApp
 
             //INITIALIZING VARIABLES
             minimized = false;
-            explainLabel.Text = "Start By Saying 'Hey " + BotName + "'";
+            explainLabel.Text = "Start By Saying '" + BotName + "'";
 
             //SET TOOLTIPS
             weatherBox.MouseHover += WeatherBox_MouseHover;
             internetBox.MouseHover += InternetBox_MouseHover;
             selfieBox.MouseHover += SelfieBox_MouseHover;
             mediaBox.MouseHover += MediaBox_MouseHover;
+            appBox.MouseHover += AppBox_MouseHover;
+            officeBox.MouseHover += OfficeBox_MouseHover;
+            systemBox.MouseHover += SystemBox_MouseHover;
             btnSettings.MouseHover += BtnSettings_MouseHover;
             btnAddCommand.MouseHover += BtnAddCommand_MouseHover;
 
@@ -87,7 +86,6 @@ namespace VirtualAssistentApp
             }
         }
 
-       
         //--------------------------------------------------------------------------------------------//
         // METHODS
 
@@ -96,7 +94,7 @@ namespace VirtualAssistentApp
             var filename = @"C:\Github\VirtualAssistant\VirtualAssistentApp\settings.txt";
             var allLines = File.ReadAllLines(filename);
 
-            if (allLines.Length  > 0)
+            if (allLines.Length > 0)
             {
                 ArrayList settingsList = new ArrayList();
 
@@ -143,7 +141,7 @@ namespace VirtualAssistentApp
 
             //SET RECOGNIZER ENGINE
             recEngine = new SpeechRecognitionEngine(recognizerInfo.Culture);
-            recEngine.BabbleTimeout = TimeSpan.FromSeconds(3.2);
+            recEngine.BabbleTimeout = TimeSpan.FromSeconds(4.0);
 
             //SELECT MICROPHONE
             recEngine.SetInputToDefaultAudioDevice();
@@ -153,7 +151,7 @@ namespace VirtualAssistentApp
             commands.Add(File.ReadAllLines(@"C:\Github\VirtualAssistant\VirtualAssistentApp\commands.txt"));
 
             //GRAMMARBUILDER
-            gBuilder = new GrammarBuilder();
+            GrammarBuilder gBuilder = new GrammarBuilder();
             gBuilder.Culture = recognizerInfo.Culture;
             gBuilder.Append(commands);
 
@@ -262,7 +260,23 @@ namespace VirtualAssistentApp
             return "error";
         }
 
-        //Kill process
+        //START PROCESS 
+        private void startProgram(string app)
+        {
+            Process process = null;
+
+            try
+            {
+                process = Process.Start(app);
+                synthesizer.Speak("Starting Application");
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex);
+            }
+        }
+
+        //KILL PROCESS
         private void killProgram(string app)
         {
             Process[] process = null;
@@ -289,6 +303,7 @@ namespace VirtualAssistentApp
         //SEARCH
         private void startSearch(bool image)
         {
+
             try
             {
                 recEngine.UnloadAllGrammars();
@@ -296,7 +311,7 @@ namespace VirtualAssistentApp
                 Choices search = new Choices();
                 search.Add(File.ReadAllLines(@"C:\Github\VirtualAssistant\VirtualAssistentApp\words.txt"));
 
-                gBuilder = new GrammarBuilder();
+                GrammarBuilder gBuilder = new GrammarBuilder();
                 gBuilder.Append(search);
                 grammar = new Grammar(new GrammarBuilder(gBuilder, 0, 5));
 
@@ -342,7 +357,7 @@ namespace VirtualAssistentApp
             {
                 Debug.WriteLine(ex);
             }
-            
+
         }
 
         //--------------------------------------------------------------------------------------------//
@@ -351,6 +366,7 @@ namespace VirtualAssistentApp
         //SPEECH RECOGNIZER LISTENER
         private void RecEngine_SpeechRecognized(object sender, SpeechRecognizedEventArgs e)
         {
+            Boolean isAwake = false;
             try
             {
                 string speech = e.Result.Text;
@@ -358,26 +374,25 @@ namespace VirtualAssistentApp
 
                 if (speech == "Hey " + BotName || speech == BotName)
                 {
-                    awake = true;
+                    isAwake = true;
                     synthesizer.Speak("Whats up");
                 }
 
-                if (awake == true)
+                if (isAwake != true)
                 {
 
                     if ((speech.StartsWith("Search For") || speech.StartsWith("search for")) && !speech.Contains("images"))
                     {
                         recEngine.RecognizeAsyncStop();
-
                         startSearch(false);
                     }
 
-                    if (speech.StartsWith("Search For Images") || speech.StartsWith("search for images"))
+                    else if (speech.StartsWith("Search For Images") || speech.StartsWith("search for images"))
                     {
                         recEngine.RecognizeAsyncStop();
-
                         startSearch(true);
                     }
+
 
                     switch (speech)
                     {
@@ -385,24 +400,42 @@ namespace VirtualAssistentApp
                         //----BEGIN OF APPLICATIONS---------------------------------------------------------------//
 
                         case "Open Word":
-                            Process.Start(@"C:\Program Files\Microsoft Office\root\Office16\WINWORD.EXE");
+                            startProgram(@"C:\Program Files\Microsoft Office\root\Office16\WINWORD.exe");
                             break;
                         case "Close Word":
                             killProgram("WINWORD");
                             break;
 
                         case "Open Excel":
-                            Process.Start(@"C:\Program Files\Microsoft Office\root\Office16\EXCEL.EXE");
+                            startProgram(@"C:\Program Files\Microsoft Office\root\Office16\EXCEL.exe");
                             break;
                         case "Close Excel":
                             killProgram("EXCEL");
                             break;
 
                         case "Open Powerpoint":
-                            Process.Start(@"C:\Program Files\Microsoft Office\root\Office16\POWERPNT.EXE");
+                            startProgram(@"C:\Program Files\Microsoft Office\root\Office16\POWERPNT.exe");
                             break;
                         case "Close Powerpoint":
                             killProgram("POWERPNT");
+                            break;
+
+                        case "Open Note Pad":
+                            startProgram(@"C:\WINDOWS\system32\notepad.exe");
+                            break;
+                        case "Close Note Pad":
+                            killProgram("notepad");
+                            break;
+
+                        case "Open Visual Studio":
+                            startProgram(@"C:\Program Files (x86)\Microsoft Visual Studio 14.0\Common7\IDE\devenv.exe");
+                            break;
+                        case "Close Visual Studio":
+                            killProgram("devenv");
+                            break;
+
+                        case "Save":
+                            SendKeys.Send("^(s)");
                             break;
 
                         //----END OF APPLICATIONS---------------------------------------------------------------//
@@ -482,6 +515,7 @@ namespace VirtualAssistentApp
                             openBrowser("http://radioplayer.npo.nl/funx/?channel=null");
                             break;
 
+                        case "Open YouTube":
                         case "Open You Tjub":
                             openBrowser("https://youtube.com");
                             break;
@@ -502,10 +536,26 @@ namespace VirtualAssistentApp
                         //--------------------------------------------------------------------------------------//
                         //----BEGIN OF SYSTEM---------------------------------------------------------------//
 
-                        case "Bitch":
-                            synthesizer.Speak("You Are The Bitch");
+                        case "Whats My Name":
+                        case "Who Am I":
+                            synthesizer.Speak("You Are " + UserName);
                             break;
 
+                        case "Copy":
+                            SendKeys.Send("^(c)");
+                            break;
+
+                        case "Cut":
+                            SendKeys.Send("^(x)");
+                            break;
+
+                        case "Select All":
+                            SendKeys.Send("^(a)");
+                            break;
+
+                        case "Paste":
+                            SendKeys.Send("^(v)");
+                            break;
 
                         case "Close":
                         case "Exit":
@@ -519,8 +569,11 @@ namespace VirtualAssistentApp
                         default:
                             break;
 
-                        //--------------------------------------------------------------------------------------//
+                            //--------------------------------------------------------------------------------------//
                     }
+
+                    isAwake = false;
+
                 }
             }
             catch (Exception ex)
@@ -561,9 +614,9 @@ namespace VirtualAssistentApp
         private void InternetBox_MouseHover(object sender, EventArgs e)
         {
             ToolTip tt = new ToolTip();
-            tt.SetToolTip(this.internetBox, "Possible commands are: \n \n - Open Browser/Internet \n" 
+            tt.SetToolTip(this.internetBox, "Possible commands are: \n \n - Open Browser/Internet \n"
                 + " - Go to Internet/Google/Facebook \n - Close Browser/Internet \n"
-                + " - When 'Remember Me?' Enabled, Use Login");
+                + " - When 'Remember Me?' Enabled, Use 'Login'");
         }
 
         private void WeatherBox_MouseHover(object sender, EventArgs e)
@@ -578,6 +631,26 @@ namespace VirtualAssistentApp
             ToolTip tt = new ToolTip();
             tt.SetToolTip(this.mediaBox, "Possible commands are: \n \n - Open Radio \n - Open FunX \n"
                 + " - Open Media Player \n - Open YouTube \n - Play \n - Pause \n");
+        }
+
+        private void AppBox_MouseHover(object sender, EventArgs e)
+        {
+            ToolTip tt = new ToolTip();
+            tt.SetToolTip(this.appBox, "Possible commands are: \n \n ");
+        }
+
+        private void OfficeBox_MouseHover(object sender, EventArgs e)
+        {
+            ToolTip tt = new ToolTip();
+            tt.SetToolTip(this.officeBox, "Possible commands are: \n \n - Open Word \n - Open Powerpoint \n"
+                + " - Open Excel \n - Open Notepad \n");
+        }
+
+        private void SystemBox_MouseHover(object sender, EventArgs e)
+        {
+            ToolTip tt = new ToolTip();
+            tt.SetToolTip(this.systemBox, "Possible commands are: \n \n - Copy \n - Cut \n"
+                + " - Paste \n - Select All \n");
         }
 
         private void BtnSettings_MouseHover(object sender, EventArgs e)
@@ -608,6 +681,7 @@ namespace VirtualAssistentApp
             af.Show();
             af.Activate();
         }
+
 
         //----------------------------------------------------------------------------------------//
 

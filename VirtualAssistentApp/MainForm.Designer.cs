@@ -37,10 +37,16 @@
             this.btnSettings = new System.Windows.Forms.Button();
             this.mediaBox = new System.Windows.Forms.PictureBox();
             this.btnAddCommand = new System.Windows.Forms.Button();
+            this.appBox = new System.Windows.Forms.PictureBox();
+            this.officeBox = new System.Windows.Forms.PictureBox();
+            this.systemBox = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.weatherBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.internetBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.selfieBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.mediaBox)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.appBox)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.officeBox)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.systemBox)).BeginInit();
             this.SuspendLayout();
             // 
             // title
@@ -99,7 +105,7 @@
             this.explainLabel.ForeColor = System.Drawing.Color.White;
             this.explainLabel.Location = new System.Drawing.Point(58, 402);
             this.explainLabel.Name = "explainLabel";
-            this.explainLabel.Size = new System.Drawing.Size(369, 33);
+            this.explainLabel.Size = new System.Drawing.Size(439, 33);
             this.explainLabel.TabIndex = 4;
             this.explainLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
@@ -110,7 +116,7 @@
             this.btnSettings.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.btnSettings.FlatAppearance.BorderSize = 0;
             this.btnSettings.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnSettings.Location = new System.Drawing.Point(492, 402);
+            this.btnSettings.Location = new System.Drawing.Point(620, 402);
             this.btnSettings.Name = "btnSettings";
             this.btnSettings.Size = new System.Drawing.Size(53, 41);
             this.btnSettings.TabIndex = 5;
@@ -136,20 +142,59 @@
             this.btnAddCommand.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.btnAddCommand.FlatAppearance.BorderSize = 0;
             this.btnAddCommand.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnAddCommand.Location = new System.Drawing.Point(433, 402);
+            this.btnAddCommand.Location = new System.Drawing.Point(561, 402);
             this.btnAddCommand.Name = "btnAddCommand";
             this.btnAddCommand.Size = new System.Drawing.Size(53, 41);
             this.btnAddCommand.TabIndex = 7;
             this.btnAddCommand.UseVisualStyleBackColor = true;
             this.btnAddCommand.Click += new System.EventHandler(this.btnAddCommand_Click);
             // 
-            // Form1
+            // appBox
+            // 
+            this.appBox.BackColor = System.Drawing.Color.Transparent;
+            this.appBox.BackgroundImage = global::VirtualAssistentApp.Properties.Resources.settings_3;
+            this.appBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.appBox.InitialImage = ((System.Drawing.Image)(resources.GetObject("appBox.InitialImage")));
+            this.appBox.Location = new System.Drawing.Point(236, 216);
+            this.appBox.Name = "appBox";
+            this.appBox.Size = new System.Drawing.Size(90, 90);
+            this.appBox.TabIndex = 8;
+            this.appBox.TabStop = false;
+            // 
+            // officeBox
+            // 
+            this.officeBox.BackColor = System.Drawing.Color.Transparent;
+            this.officeBox.BackgroundImage = global::VirtualAssistentApp.Properties.Resources.compose;
+            this.officeBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.officeBox.InitialImage = ((System.Drawing.Image)(resources.GetObject("officeBox.InitialImage")));
+            this.officeBox.Location = new System.Drawing.Point(407, 216);
+            this.officeBox.Name = "officeBox";
+            this.officeBox.Size = new System.Drawing.Size(90, 90);
+            this.officeBox.TabIndex = 9;
+            this.officeBox.TabStop = false;
+            // 
+            // systemBox
+            // 
+            this.systemBox.BackColor = System.Drawing.Color.Transparent;
+            this.systemBox.BackgroundImage = global::VirtualAssistentApp.Properties.Resources.television_1;
+            this.systemBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.systemBox.InitialImage = ((System.Drawing.Image)(resources.GetObject("systemBox.InitialImage")));
+            this.systemBox.Location = new System.Drawing.Point(561, 160);
+            this.systemBox.Name = "systemBox";
+            this.systemBox.Size = new System.Drawing.Size(90, 90);
+            this.systemBox.TabIndex = 10;
+            this.systemBox.TabStop = false;
+            // 
+            // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 24F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.ClientSize = new System.Drawing.Size(557, 455);
+            this.ClientSize = new System.Drawing.Size(685, 455);
+            this.Controls.Add(this.systemBox);
+            this.Controls.Add(this.officeBox);
+            this.Controls.Add(this.appBox);
             this.Controls.Add(this.btnAddCommand);
             this.Controls.Add(this.mediaBox);
             this.Controls.Add(this.btnSettings);
@@ -162,13 +207,16 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
             this.MaximizeBox = false;
-            this.Name = "Form1";
+            this.Name = "MainForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Virtual Assistent";
             ((System.ComponentModel.ISupportInitialize)(this.weatherBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.internetBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.selfieBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.mediaBox)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.appBox)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.officeBox)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.systemBox)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -183,6 +231,9 @@
         private System.Windows.Forms.Button btnSettings;
         private System.Windows.Forms.PictureBox mediaBox;
         private System.Windows.Forms.Button btnAddCommand;
+        private System.Windows.Forms.PictureBox appBox;
+        private System.Windows.Forms.PictureBox officeBox;
+        private System.Windows.Forms.PictureBox systemBox;
     }
 }
 

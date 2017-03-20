@@ -93,6 +93,16 @@ namespace VirtualAssistentApp.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap compose {
+            get {
+                object obj = ResourceManager.GetObject("compose", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap internet {
             get {
                 object obj = ResourceManager.GetObject("internet", resourceCulture);
@@ -123,9 +133,29 @@ namespace VirtualAssistentApp.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap settings_3 {
+            get {
+                object obj = ResourceManager.GetObject("settings-3", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap settings_4 {
             get {
                 object obj = ResourceManager.GetObject("settings-4", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap television_1 {
+            get {
+                object obj = ResourceManager.GetObject("television-1", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
