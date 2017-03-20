@@ -40,15 +40,19 @@ Play
 Player
 Powerpoint
 Radio
+Read
 Save
 Search
 Select
+Selected
 Selfie
 Show
 Start
+Stop
 Studio
 Take
 Temperature
+Text
 The
 Time
 To
@@ -60,4 +64,6 @@ Whats
 Who
 Word
 You
-YouTube
+YouTubeMary
+Mary
+Mary

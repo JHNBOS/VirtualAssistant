@@ -1,13 +1,6 @@
 ﻿using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace VirtualAssistentApp
@@ -60,6 +53,17 @@ namespace VirtualAssistentApp
                 }
 
                 assistentBox.Text = settingsList[4].ToString();
+
+                bool awake = bool.Parse(settingsList[5].ToString());
+
+                if (awake == true)
+                {
+                    awakeCheckBox.Checked = true;
+                }
+                else
+                {
+                    awakeCheckBox.Checked = false;
+                }
             }
         }
 
@@ -70,15 +74,17 @@ namespace VirtualAssistentApp
             string country = countryBox.Text.ToString();
             string gender = genderBox.SelectedItem.ToString();
             string botName = assistentBox.Text.ToString();
+            string useAwake = awakeCheckBox.Checked.ToString();
 
             File.WriteAllText(filename, "");
 
-            string[] settings = new string[5];
+            string[] settings = new string[6];
             settings[0] = "Name:" + name;
             settings[1] = "City:" + city;
             settings[2] = "Country:" + country;
             settings[3] = "Gender:" + gender;
             settings[4] = "BotName:" + botName;
+            settings[5] = "UseAwake:" + useAwake;
 
             File.WriteAllLines(filename, settings);
 

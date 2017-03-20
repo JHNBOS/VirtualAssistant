@@ -35,6 +35,7 @@ namespace VirtualAssistentApp
         private string Query { get; set; }
 
         private bool minimized { get; set; }
+        public bool UseAwake { get; set; }
         private bool selfie = false;
 
 
@@ -123,6 +124,21 @@ namespace VirtualAssistentApp
                 }
 
                 BotName = settingsList[4].ToString();
+
+                string useawake = settingsList[5].ToString();
+                if (useawake == "false" || useawake == "False")
+                {
+                    UseAwake = false;
+                }
+                else if (useawake == "true" || useawake == "True")
+                {
+                    UseAwake = true;
+                }
+                else
+                {
+                    UseAwake = true;
+                }
+
             }
         }
 
@@ -300,10 +316,24 @@ namespace VirtualAssistentApp
             }
         }
 
+        //READ SELECTED TEXT
+        private void readSelected()
+        {
+            string clipboardText = "";
+
+            SendKeys.Send("^(c)");
+
+            if (Clipboard.ContainsText(TextDataFormat.Text))
+            {
+                clipboardText = Clipboard.GetText(TextDataFormat.Text);
+            }
+
+            synthesizer.SpeakAsync(clipboardText);
+        }
+
         //SEARCH
         private void startSearch(bool image)
         {
-
             try
             {
                 recEngine.UnloadAllGrammars();
@@ -372,10 +402,25 @@ namespace VirtualAssistentApp
                 string speech = e.Result.Text;
                 Debug.WriteLine("User said: " + speech);
 
-                if (speech == "Hey " + BotName || speech == BotName)
+                if (UseAwake == false)
+                {
+                    isAwake = true;
+                }
+
+                if (speech == "Hey " + BotName || speech == BotName && isAwake == false)
                 {
                     isAwake = true;
                     synthesizer.Speak("Whats up");
+                }
+
+                if (speech == "Stop")
+                {
+                    var current = synthesizer.GetCurrentlySpokenPrompt();
+
+                    if (current != null)
+                    {
+                        synthesizer.SpeakAsyncCancel(current);
+                    }
                 }
 
                 if (isAwake != true)
@@ -557,6 +602,10 @@ namespace VirtualAssistentApp
                             SendKeys.Send("^(v)");
                             break;
 
+                        case "Read Selected Text":
+                            readSelected();
+                            break;
+
                         case "Close":
                         case "Exit":
                         case "Goodbye":
@@ -569,7 +618,7 @@ namespace VirtualAssistentApp
                         default:
                             break;
 
-                            //--------------------------------------------------------------------------------------//
+                        //--------------------------------------------------------------------------------------//
                     }
 
                     isAwake = false;
@@ -650,7 +699,8 @@ namespace VirtualAssistentApp
         {
             ToolTip tt = new ToolTip();
             tt.SetToolTip(this.systemBox, "Possible commands are: \n \n - Copy \n - Cut \n"
-                + " - Paste \n - Select All \n");
+                + " - Paste \n - Select All \n"
+                + " - Read Selected Text \n - Stop (while reading text)");
         }
 
         private void BtnSettings_MouseHover(object sender, EventArgs e)

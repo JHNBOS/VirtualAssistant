@@ -39,6 +39,8 @@
             this.genderBox = new System.Windows.Forms.ComboBox();
             this.assistentBox = new System.Windows.Forms.TextBox();
             this.label10 = new System.Windows.Forms.Label();
+            this.awakeCheckBox = new System.Windows.Forms.CheckBox();
+            this.label5 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // nameBox
@@ -112,7 +114,7 @@
             this.btnSave.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnSave.Font = new System.Drawing.Font("Quicksand", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnSave.ForeColor = System.Drawing.Color.White;
-            this.btnSave.Location = new System.Drawing.Point(26, 348);
+            this.btnSave.Location = new System.Drawing.Point(24, 404);
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(208, 39);
             this.btnSave.TabIndex = 6;
@@ -167,13 +169,44 @@
             this.label10.TabIndex = 9;
             this.label10.Text = "Name Assistant";
             // 
+            // awakeCheckBox
+            // 
+            this.awakeCheckBox.AutoSize = true;
+            this.awakeCheckBox.BackColor = System.Drawing.Color.Transparent;
+            this.awakeCheckBox.Checked = true;
+            this.awakeCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.awakeCheckBox.FlatAppearance.BorderColor = System.Drawing.Color.Black;
+            this.awakeCheckBox.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.awakeCheckBox.Font = new System.Drawing.Font("Quicksand", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.awakeCheckBox.ForeColor = System.Drawing.Color.LimeGreen;
+            this.awakeCheckBox.Location = new System.Drawing.Point(26, 355);
+            this.awakeCheckBox.Name = "awakeCheckBox";
+            this.awakeCheckBox.Size = new System.Drawing.Size(12, 11);
+            this.awakeCheckBox.TabIndex = 11;
+            this.awakeCheckBox.UseVisualStyleBackColor = false;
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.BackColor = System.Drawing.Color.Transparent;
+            this.label5.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.label5.Font = new System.Drawing.Font("Quicksand", 9.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label5.ForeColor = System.Drawing.Color.White;
+            this.label5.Location = new System.Drawing.Point(39, 349);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(195, 21);
+            this.label5.TabIndex = 12;
+            this.label5.Text = "Say Name Before Command";
+            // 
             // SettingsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 19F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackgroundImage = global::VirtualAssistentApp.Properties.Resources.background;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.ClientSize = new System.Drawing.Size(253, 405);
+            this.ClientSize = new System.Drawing.Size(253, 455);
+            this.Controls.Add(this.label5);
+            this.Controls.Add(this.awakeCheckBox);
             this.Controls.Add(this.assistentBox);
             this.Controls.Add(this.label10);
             this.Controls.Add(this.genderBox);
@@ -210,5 +243,7 @@
         private System.Windows.Forms.ComboBox genderBox;
         private System.Windows.Forms.TextBox assistentBox;
         private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.CheckBox awakeCheckBox;
+        private System.Windows.Forms.Label label5;
     }
 }
