@@ -23,6 +23,9 @@ namespace VirtualAssistentApp
         private Bitmap image;
         private Grammar grammar;
 
+        public const int WM_NCLBUTTONDOWN = 0xA1;
+        public const int HT_CAPTION = 0x2;
+
         //PRIMITIVE TYPES
         private string UserName { get; set; }
         private string City { get; set; }
@@ -35,6 +38,7 @@ namespace VirtualAssistentApp
         private string Query { get; set; }
 
         private bool minimized { get; set; }
+        private bool formMinized { get; set; }
         public bool UseAwake { get; set; }
         private bool selfie = false;
 
@@ -48,6 +52,7 @@ namespace VirtualAssistentApp
 
             //INITIALIZING VARIABLES
             minimized = false;
+            formMinized = false;
             explainLabel.Text = "Start By Saying '" + BotName + "'";
 
             //SET TOOLTIPS
@@ -60,6 +65,9 @@ namespace VirtualAssistentApp
             systemBox.MouseHover += SystemBox_MouseHover;
             btnSettings.MouseHover += BtnSettings_MouseHover;
             btnAddCommand.MouseHover += BtnAddCommand_MouseHover;
+
+            //LISTENERS
+            this.MouseDown += MainForm_MouseDown;
 
             //RUN METHODS
             setupSpeechRecognition();
@@ -87,9 +95,24 @@ namespace VirtualAssistentApp
             }
         }
 
-        //--------------------------------------------------------------------------------------------//
-        // METHODS
+        //MOVE FORM WITHOUT TITLEBAR
+        [System.Runtime.InteropServices.DllImportAttribute("user32.dll")]
+        public static extern int SendMessage(IntPtr hWnd, int Msg, int wParam, int lParam);
+        [System.Runtime.InteropServices.DllImportAttribute("user32.dll")]
+        public static extern bool ReleaseCapture();
+        private void MainForm_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
+            {
+                ReleaseCapture();
+                SendMessage(Handle, WM_NCLBUTTONDOWN, HT_CAPTION, 0);
+            }
+        }
 
+        //---------------------------------------------------------------------------------------------------------
+        // METHODS-------------------------------------------------------------------------------------------------
+
+        //READ SETINGS
         private void readSettings()
         {
             var filename = @"C:\Github\VirtualAssistant\VirtualAssistentApp\settings.txt";
@@ -142,9 +165,9 @@ namespace VirtualAssistentApp
             }
         }
 
+        //---------------------------------------------------------------------------------------------------------
         private void setupSpeechRecognition()
         {
-            //RECOGNIZER
             RecognizerInfo recognizerInfo = null;
             foreach (RecognizerInfo ri in SpeechRecognitionEngine.InstalledRecognizers())
             {
@@ -155,26 +178,19 @@ namespace VirtualAssistentApp
                 }
             }
 
-            //SET RECOGNIZER ENGINE
             recEngine = new SpeechRecognitionEngine(recognizerInfo.Culture);
-            recEngine.BabbleTimeout = TimeSpan.FromSeconds(4.0);
 
-            //SELECT MICROPHONE
+            recEngine.BabbleTimeout = TimeSpan.FromSeconds(4.0);
             recEngine.SetInputToDefaultAudioDevice();
 
-            //SETUP POSSIBLE COMMANDS
             Choices commands = new Choices();
             commands.Add(File.ReadAllLines(@"C:\Github\VirtualAssistant\VirtualAssistentApp\commands.txt"));
 
-            //GRAMMARBUILDER
             GrammarBuilder gBuilder = new GrammarBuilder();
             gBuilder.Culture = recognizerInfo.Culture;
             gBuilder.Append(commands);
-
-            //GRAMMAR
             grammar = new Grammar(new GrammarBuilder(gBuilder, 0, 5));
 
-            //RECOGNITION ENGINE
             try
             {
                 recEngine.RequestRecognizerUpdate();
@@ -187,6 +203,7 @@ namespace VirtualAssistentApp
             }
         }
 
+        //---------------------------------------------------------------------------------------------------------
         //EXIT PROGRAM
         private void Exit()
         {
@@ -202,6 +219,7 @@ namespace VirtualAssistentApp
             Environment.Exit(0);
         }
 
+        //---------------------------------------------------------------------------------------------------------
         //OPEN DEFAULT BROWSER
         private void openBrowser(string url)
         {
@@ -209,6 +227,7 @@ namespace VirtualAssistentApp
             Process.Start(url);
         }
 
+        //---------------------------------------------------------------------------------------------------------
         //MINIMIZE OR MAXIMIZE BROWSER
         private void minimizeBrowser()
         {
@@ -229,7 +248,8 @@ namespace VirtualAssistentApp
 
         }
 
-        //GET WEATHER FROM GOOGLE
+        //---------------------------------------------------------------------------------------------------------
+        //GET WEATHER FROM YAHOO
         private String GetWeather(String input)
         {
             XmlDocument wData = new XmlDocument();
@@ -276,6 +296,7 @@ namespace VirtualAssistentApp
             return "error";
         }
 
+        //---------------------------------------------------------------------------------------------------------
         //START PROCESS 
         private void startProgram(string app)
         {
@@ -292,6 +313,7 @@ namespace VirtualAssistentApp
             }
         }
 
+        //---------------------------------------------------------------------------------------------------------
         //KILL PROCESS
         private void killProgram(string app)
         {
@@ -316,6 +338,7 @@ namespace VirtualAssistentApp
             }
         }
 
+        //---------------------------------------------------------------------------------------------------------
         //READ SELECTED TEXT
         private void readSelected()
         {
@@ -331,6 +354,25 @@ namespace VirtualAssistentApp
             synthesizer.SpeakAsync(clipboardText);
         }
 
+        //---------------------------------------------------------------------------------------------------------
+        //MINIMIZE FORM
+        private void minimizeForm()
+        {
+            this.Height = 36;
+            this.Width = 320;
+            formMinized = true;
+        }
+
+        //---------------------------------------------------------------------------------------------------------
+        //MAXIMIZE FORM
+        private void maximizeForm()
+        {
+            this.Height = 455;
+            this.Width = 685;
+            formMinized = false;
+        }
+
+        //---------------------------------------------------------------------------------------------------------
         //SEARCH
         private void startSearch(bool image)
         {
@@ -390,9 +432,9 @@ namespace VirtualAssistentApp
 
         }
 
-        //--------------------------------------------------------------------------------------------//
-        // LISTENERS
-
+        //------------------------------------------------------------------------------------------------------------
+        // LISTENERS----------------------------------------------------------------------------------------------
+        
         //SPEECH RECOGNIZER LISTENER
         private void RecEngine_SpeechRecognized(object sender, SpeechRecognizedEventArgs e)
         {
@@ -653,6 +695,7 @@ namespace VirtualAssistentApp
             }
         }
 
+        //---------------------------------------------------------------------------------------------------------
         //SHOW TOOLTIPS WHEN HOVERING OVER ICONS
         private void SelfieBox_MouseHover(object sender, EventArgs e)
         {
@@ -715,6 +758,7 @@ namespace VirtualAssistentApp
             tt.SetToolTip(this.btnAddCommand, "Add New Command");
         }
 
+        //------------------------------------------------------------------------------------------------------
         //SETTINGS BUTTON
         private void btnSettings_Click(object sender, EventArgs e)
         {
@@ -724,6 +768,7 @@ namespace VirtualAssistentApp
             sf.Activate();
         }
 
+        //ADD COMMAND BUTTON
         private void btnAddCommand_Click(object sender, EventArgs e)
         {
             AddCommandForm af = new AddCommandForm();
@@ -732,6 +777,22 @@ namespace VirtualAssistentApp
             af.Activate();
         }
 
+        private void closeButton_Click(object sender, EventArgs e)
+        {
+            Exit();
+        }
+
+        private void minimizeButton_Click(object sender, EventArgs e)
+        {
+            if (formMinized == false)
+            {
+                minimizeForm();
+            }
+            else
+            {
+                maximizeForm();
+            }
+        }
 
         //----------------------------------------------------------------------------------------//
 

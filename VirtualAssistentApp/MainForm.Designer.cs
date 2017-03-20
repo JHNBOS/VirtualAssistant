@@ -40,6 +40,8 @@
             this.appBox = new System.Windows.Forms.PictureBox();
             this.officeBox = new System.Windows.Forms.PictureBox();
             this.systemBox = new System.Windows.Forms.PictureBox();
+            this.closeButton = new System.Windows.Forms.Button();
+            this.minimizeButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.weatherBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.internetBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.selfieBox)).BeginInit();
@@ -55,9 +57,9 @@
             this.title.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.title.Font = new System.Drawing.Font("Quicksand", 25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.title.ForeColor = System.Drawing.Color.White;
-            this.title.Location = new System.Drawing.Point(13, 13);
+            this.title.Location = new System.Drawing.Point(13, 44);
             this.title.Name = "title";
-            this.title.Size = new System.Drawing.Size(532, 54);
+            this.title.Size = new System.Drawing.Size(660, 54);
             this.title.TabIndex = 0;
             this.title.Text = "Virtual Assistent";
             this.title.TextAlign = System.Drawing.ContentAlignment.TopCenter;
@@ -68,7 +70,7 @@
             this.weatherBox.BackgroundImage = global::VirtualAssistentApp.Properties.Resources.cloud;
             this.weatherBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.weatherBox.InitialImage = ((System.Drawing.Image)(resources.GetObject("weatherBox.InitialImage")));
-            this.weatherBox.Location = new System.Drawing.Point(64, 89);
+            this.weatherBox.Location = new System.Drawing.Point(50, 122);
             this.weatherBox.Name = "weatherBox";
             this.weatherBox.Size = new System.Drawing.Size(90, 90);
             this.weatherBox.TabIndex = 1;
@@ -80,7 +82,7 @@
             this.internetBox.BackgroundImage = global::VirtualAssistentApp.Properties.Resources.internet;
             this.internetBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.internetBox.InitialImage = ((System.Drawing.Image)(resources.GetObject("internetBox.InitialImage")));
-            this.internetBox.Location = new System.Drawing.Point(236, 89);
+            this.internetBox.Location = new System.Drawing.Point(214, 122);
             this.internetBox.Name = "internetBox";
             this.internetBox.Size = new System.Drawing.Size(90, 90);
             this.internetBox.TabIndex = 2;
@@ -92,7 +94,7 @@
             this.selfieBox.BackgroundImage = global::VirtualAssistentApp.Properties.Resources.photo_camera;
             this.selfieBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.selfieBox.InitialImage = ((System.Drawing.Image)(resources.GetObject("selfieBox.InitialImage")));
-            this.selfieBox.Location = new System.Drawing.Point(407, 89);
+            this.selfieBox.Location = new System.Drawing.Point(378, 122);
             this.selfieBox.Name = "selfieBox";
             this.selfieBox.Size = new System.Drawing.Size(90, 90);
             this.selfieBox.TabIndex = 3;
@@ -129,7 +131,7 @@
             this.mediaBox.BackgroundImage = global::VirtualAssistentApp.Properties.Resources.play_button_1;
             this.mediaBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.mediaBox.InitialImage = ((System.Drawing.Image)(resources.GetObject("mediaBox.InitialImage")));
-            this.mediaBox.Location = new System.Drawing.Point(64, 216);
+            this.mediaBox.Location = new System.Drawing.Point(50, 249);
             this.mediaBox.Name = "mediaBox";
             this.mediaBox.Size = new System.Drawing.Size(90, 90);
             this.mediaBox.TabIndex = 6;
@@ -155,7 +157,7 @@
             this.appBox.BackgroundImage = global::VirtualAssistentApp.Properties.Resources.settings_3;
             this.appBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.appBox.InitialImage = ((System.Drawing.Image)(resources.GetObject("appBox.InitialImage")));
-            this.appBox.Location = new System.Drawing.Point(236, 216);
+            this.appBox.Location = new System.Drawing.Point(214, 249);
             this.appBox.Name = "appBox";
             this.appBox.Size = new System.Drawing.Size(90, 90);
             this.appBox.TabIndex = 8;
@@ -167,7 +169,7 @@
             this.officeBox.BackgroundImage = global::VirtualAssistentApp.Properties.Resources.compose;
             this.officeBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.officeBox.InitialImage = ((System.Drawing.Image)(resources.GetObject("officeBox.InitialImage")));
-            this.officeBox.Location = new System.Drawing.Point(407, 216);
+            this.officeBox.Location = new System.Drawing.Point(378, 249);
             this.officeBox.Name = "officeBox";
             this.officeBox.Size = new System.Drawing.Size(90, 90);
             this.officeBox.TabIndex = 9;
@@ -179,19 +181,59 @@
             this.systemBox.BackgroundImage = global::VirtualAssistentApp.Properties.Resources.television_1;
             this.systemBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.systemBox.InitialImage = ((System.Drawing.Image)(resources.GetObject("systemBox.InitialImage")));
-            this.systemBox.Location = new System.Drawing.Point(561, 160);
+            this.systemBox.Location = new System.Drawing.Point(542, 122);
             this.systemBox.Name = "systemBox";
             this.systemBox.Size = new System.Drawing.Size(90, 90);
             this.systemBox.TabIndex = 10;
             this.systemBox.TabStop = false;
             // 
+            // closeButton
+            // 
+            this.closeButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.closeButton.BackColor = System.Drawing.Color.Transparent;
+            this.closeButton.FlatAppearance.BorderColor = System.Drawing.Color.White;
+            this.closeButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.closeButton.Font = new System.Drawing.Font("Quicksand", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.closeButton.ForeColor = System.Drawing.Color.Red;
+            this.closeButton.Location = new System.Drawing.Point(636, 2);
+            this.closeButton.Name = "closeButton";
+            this.closeButton.Padding = new System.Windows.Forms.Padding(0, 3, 2, 0);
+            this.closeButton.Size = new System.Drawing.Size(37, 25);
+            this.closeButton.TabIndex = 11;
+            this.closeButton.Text = "X";
+            this.closeButton.UseCompatibleTextRendering = true;
+            this.closeButton.UseVisualStyleBackColor = false;
+            this.closeButton.Click += new System.EventHandler(this.closeButton_Click);
+            // 
+            // minimizeButton
+            // 
+            this.minimizeButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.minimizeButton.BackColor = System.Drawing.Color.Transparent;
+            this.minimizeButton.FlatAppearance.BorderColor = System.Drawing.Color.White;
+            this.minimizeButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.minimizeButton.Font = new System.Drawing.Font("Quicksand", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.minimizeButton.ForeColor = System.Drawing.Color.White;
+            this.minimizeButton.Location = new System.Drawing.Point(593, 2);
+            this.minimizeButton.Name = "minimizeButton";
+            this.minimizeButton.Padding = new System.Windows.Forms.Padding(0, 0, 2, 0);
+            this.minimizeButton.Size = new System.Drawing.Size(37, 25);
+            this.minimizeButton.TabIndex = 12;
+            this.minimizeButton.Text = "_";
+            this.minimizeButton.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.minimizeButton.UseCompatibleTextRendering = true;
+            this.minimizeButton.UseVisualStyleBackColor = false;
+            this.minimizeButton.Click += new System.EventHandler(this.minimizeButton_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 24F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(685, 455);
+            this.Controls.Add(this.minimizeButton);
+            this.Controls.Add(this.closeButton);
             this.Controls.Add(this.systemBox);
             this.Controls.Add(this.officeBox);
             this.Controls.Add(this.appBox);
@@ -208,8 +250,9 @@
             this.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
             this.MaximizeBox = false;
             this.Name = "MainForm";
+            this.Opacity = 0.95D;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Virtual Assistent";
+            this.Text = " ";
             ((System.ComponentModel.ISupportInitialize)(this.weatherBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.internetBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.selfieBox)).EndInit();
@@ -234,6 +277,8 @@
         private System.Windows.Forms.PictureBox appBox;
         private System.Windows.Forms.PictureBox officeBox;
         private System.Windows.Forms.PictureBox systemBox;
+        private System.Windows.Forms.Button closeButton;
+        private System.Windows.Forms.Button minimizeButton;
     }
 }
 
