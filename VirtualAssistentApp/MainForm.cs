@@ -65,9 +65,15 @@ namespace VirtualAssistentApp
             systemBox.MouseHover += SystemBox_MouseHover;
             btnSettings.MouseHover += BtnSettings_MouseHover;
             btnAddCommand.MouseHover += BtnAddCommand_MouseHover;
+            closeButton.MouseHover += CloseButton_MouseHover;
+            minimizeButton.MouseHover += MinimizeButton_MouseHover;
+            maximizeButton.MouseHover += MaximizeButton_MouseHover;
+            lockButton.MouseHover += LockButton_MouseHover;
 
             //LISTENERS
             this.MouseDown += MainForm_MouseDown;
+            this.Resize += MainForm_Resize;
+            notifyIcon1.MouseDoubleClick += NotifyIcon1_MouseDoubleClick;
 
             //RUN METHODS
             setupSpeechRecognition();
@@ -767,6 +773,30 @@ namespace VirtualAssistentApp
             tt.SetToolTip(this.btnAddCommand, "Add New Command");
         }
 
+        private void LockButton_MouseHover(object sender, EventArgs e)
+        {
+            ToolTip tt = new ToolTip();
+            tt.SetToolTip(this.lockButton, "Minimize To System Tray");
+        }
+
+        private void MaximizeButton_MouseHover(object sender, EventArgs e)
+        {
+            ToolTip tt = new ToolTip();
+            tt.SetToolTip(this.maximizeButton, "Maximize");
+        }
+
+        private void MinimizeButton_MouseHover(object sender, EventArgs e)
+        {
+            ToolTip tt = new ToolTip();
+            tt.SetToolTip(this.minimizeButton, "Minimize As Toolbar");
+        }
+
+        private void CloseButton_MouseHover(object sender, EventArgs e)
+        {
+            ToolTip tt = new ToolTip();
+            tt.SetToolTip(this.closeButton, "Close Program");
+        }
+
         //------------------------------------------------------------------------------------------------------
         //SETTINGS BUTTON
         private void btnSettings_Click(object sender, EventArgs e)
@@ -786,22 +816,54 @@ namespace VirtualAssistentApp
             af.Activate();
         }
 
+        //CLOSE BUTTON
         private void closeButton_Click(object sender, EventArgs e)
         {
             Exit();
         }
 
+        //MINIMIZE BUTTON
         private void minimizeButton_Click(object sender, EventArgs e)
         {
             if (formMinized == false)
             {
                 minimizeForm();
             }
-            else
+        }
+
+        //MAXIMIZE BUTTON
+        private void maximizeButton_Click(object sender, EventArgs e)
+        {
+            if (formMinized == true)
             {
                 maximizeForm();
             }
         }
+
+        //SEND TO SYSTEM TRAY
+        private void NotifyIcon1_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            ShowInTaskbar = true;
+            notifyIcon1.Visible = false;
+            WindowState = FormWindowState.Normal;
+        }
+
+        //REMOVE FROM SYSTEM TRAY
+        private void MainForm_Resize(object sender, EventArgs e)
+        {
+            if (WindowState == FormWindowState.Minimized)
+            {
+                ShowInTaskbar = false;
+                notifyIcon1.Visible = true;
+                notifyIcon1.ShowBalloonTip(1000);
+            }
+        }
+
+        private void lockButton_Click(object sender, EventArgs e)
+        {
+            this.WindowState = FormWindowState.Minimized;
+        }
+
 
         //----------------------------------------------------------------------------------------//
 
