@@ -67,8 +67,6 @@ namespace VirtualAssistentApp
             btnAddCommand.MouseHover += BtnAddCommand_MouseHover;
             closeButton.MouseHover += CloseButton_MouseHover;
             minimizeButton.MouseHover += MinimizeButton_MouseHover;
-            maximizeButton.MouseHover += MaximizeButton_MouseHover;
-            lockButton.MouseHover += LockButton_MouseHover;
 
             //LISTENERS
             this.MouseDown += MainForm_MouseDown;
@@ -77,6 +75,7 @@ namespace VirtualAssistentApp
 
             //RUN METHODS
             setupSpeechRecognition();
+            title.Focus();
 
             //START RECOGNIZING
             recEngine.RecognizeAsync(RecognizeMode.Multiple);
@@ -364,18 +363,8 @@ namespace VirtualAssistentApp
         //MINIMIZE FORM
         private void minimizeForm()
         {
-            this.Height = 36;
-            this.Width = 320;
+            this.WindowState = FormWindowState.Minimized;
             formMinized = true;
-        }
-
-        //---------------------------------------------------------------------------------------------------------
-        //MAXIMIZE FORM
-        private void maximizeForm()
-        {
-            this.Height = 455;
-            this.Width = 685;
-            formMinized = false;
         }
 
         //---------------------------------------------------------------------------------------------------------
@@ -742,8 +731,8 @@ namespace VirtualAssistentApp
         private void AppBox_MouseHover(object sender, EventArgs e)
         {
             ToolTip tt = new ToolTip();
-            tt.SetToolTip(this.appBox, "Possible commands are: \n \n - Open Visual Studio"
-                + " - Save(when in VS)");
+            tt.SetToolTip(this.appBox, "Possible commands are: \n \n - Open Visual Studio \n"
+                + " - Save (in apps where save is 'Ctrl + S')");
         }
 
         private void OfficeBox_MouseHover(object sender, EventArgs e)
@@ -773,28 +762,16 @@ namespace VirtualAssistentApp
             tt.SetToolTip(this.btnAddCommand, "Add New Command");
         }
 
-        private void LockButton_MouseHover(object sender, EventArgs e)
-        {
-            ToolTip tt = new ToolTip();
-            tt.SetToolTip(this.lockButton, "Minimize To System Tray");
-        }
-
-        private void MaximizeButton_MouseHover(object sender, EventArgs e)
-        {
-            ToolTip tt = new ToolTip();
-            tt.SetToolTip(this.maximizeButton, "Maximize");
-        }
-
         private void MinimizeButton_MouseHover(object sender, EventArgs e)
         {
             ToolTip tt = new ToolTip();
-            tt.SetToolTip(this.minimizeButton, "Minimize As Toolbar");
+            tt.SetToolTip(this.minimizeButton, "Minimize");
         }
 
         private void CloseButton_MouseHover(object sender, EventArgs e)
         {
             ToolTip tt = new ToolTip();
-            tt.SetToolTip(this.closeButton, "Close Program");
+            tt.SetToolTip(this.closeButton, "Exit");
         }
 
         //------------------------------------------------------------------------------------------------------
@@ -829,15 +806,7 @@ namespace VirtualAssistentApp
             {
                 minimizeForm();
             }
-        }
 
-        //MAXIMIZE BUTTON
-        private void maximizeButton_Click(object sender, EventArgs e)
-        {
-            if (formMinized == true)
-            {
-                maximizeForm();
-            }
         }
 
         //SEND TO SYSTEM TRAY
@@ -846,6 +815,7 @@ namespace VirtualAssistentApp
             ShowInTaskbar = true;
             notifyIcon1.Visible = false;
             WindowState = FormWindowState.Normal;
+            title.Focus();
         }
 
         //REMOVE FROM SYSTEM TRAY
@@ -857,11 +827,6 @@ namespace VirtualAssistentApp
                 notifyIcon1.Visible = true;
                 notifyIcon1.ShowBalloonTip(1000);
             }
-        }
-
-        private void lockButton_Click(object sender, EventArgs e)
-        {
-            this.WindowState = FormWindowState.Minimized;
         }
 
 

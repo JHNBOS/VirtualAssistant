@@ -44,8 +44,6 @@
             this.notifyIcon1 = new System.Windows.Forms.NotifyIcon(this.components);
             this.closeButton = new System.Windows.Forms.Button();
             this.minimizeButton = new System.Windows.Forms.Button();
-            this.maximizeButton = new System.Windows.Forms.Button();
-            this.lockButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.weatherBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.internetBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.selfieBox)).BeginInit();
@@ -230,7 +228,7 @@
             this.minimizeButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.minimizeButton.Font = new System.Drawing.Font("Quicksand", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.minimizeButton.ForeColor = System.Drawing.Color.White;
-            this.minimizeButton.Location = new System.Drawing.Point(577, 2);
+            this.minimizeButton.Location = new System.Drawing.Point(611, 2);
             this.minimizeButton.Name = "minimizeButton";
             this.minimizeButton.Padding = new System.Windows.Forms.Padding(0, 0, 2, 0);
             this.minimizeButton.Size = new System.Drawing.Size(28, 28);
@@ -240,48 +238,6 @@
             this.minimizeButton.UseVisualStyleBackColor = false;
             this.minimizeButton.Click += new System.EventHandler(this.minimizeButton_Click);
             // 
-            // maximizeButton
-            // 
-            this.maximizeButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.maximizeButton.BackColor = System.Drawing.Color.Transparent;
-            this.maximizeButton.BackgroundImage = global::VirtualAssistentApp.Properties.Resources.maximize;
-            this.maximizeButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.maximizeButton.FlatAppearance.BorderColor = System.Drawing.Color.White;
-            this.maximizeButton.FlatAppearance.BorderSize = 0;
-            this.maximizeButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.maximizeButton.Font = new System.Drawing.Font("Quicksand", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.maximizeButton.ForeColor = System.Drawing.Color.White;
-            this.maximizeButton.Location = new System.Drawing.Point(611, 2);
-            this.maximizeButton.Name = "maximizeButton";
-            this.maximizeButton.Padding = new System.Windows.Forms.Padding(0, 0, 2, 0);
-            this.maximizeButton.Size = new System.Drawing.Size(28, 28);
-            this.maximizeButton.TabIndex = 13;
-            this.maximizeButton.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
-            this.maximizeButton.UseCompatibleTextRendering = true;
-            this.maximizeButton.UseVisualStyleBackColor = false;
-            this.maximizeButton.Click += new System.EventHandler(this.maximizeButton_Click);
-            // 
-            // lockButton
-            // 
-            this.lockButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.lockButton.BackColor = System.Drawing.Color.Transparent;
-            this.lockButton.BackgroundImage = global::VirtualAssistentApp.Properties.Resources.locked_5;
-            this.lockButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.lockButton.FlatAppearance.BorderColor = System.Drawing.Color.White;
-            this.lockButton.FlatAppearance.BorderSize = 0;
-            this.lockButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.lockButton.Font = new System.Drawing.Font("Quicksand", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lockButton.ForeColor = System.Drawing.Color.White;
-            this.lockButton.Location = new System.Drawing.Point(12, 2);
-            this.lockButton.Name = "lockButton";
-            this.lockButton.Padding = new System.Windows.Forms.Padding(0, 0, 2, 0);
-            this.lockButton.Size = new System.Drawing.Size(28, 28);
-            this.lockButton.TabIndex = 14;
-            this.lockButton.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
-            this.lockButton.UseCompatibleTextRendering = true;
-            this.lockButton.UseVisualStyleBackColor = false;
-            this.lockButton.Click += new System.EventHandler(this.lockButton_Click);
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 24F);
@@ -290,8 +246,6 @@
             this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(685, 455);
-            this.Controls.Add(this.lockButton);
-            this.Controls.Add(this.maximizeButton);
             this.Controls.Add(this.minimizeButton);
             this.Controls.Add(this.closeButton);
             this.Controls.Add(this.systemBox);
@@ -340,8 +294,6 @@
         private System.Windows.Forms.NotifyIcon notifyIcon1;
         private System.Windows.Forms.Button closeButton;
         private System.Windows.Forms.Button minimizeButton;
-        private System.Windows.Forms.Button maximizeButton;
-        private System.Windows.Forms.Button lockButton;
     }
 }
 
