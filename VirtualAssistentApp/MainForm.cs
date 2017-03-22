@@ -34,6 +34,7 @@ namespace VirtualAssistentApp
 
         private string Temperature { get; set; }
         private string Condition { get; set; }
+        private ArrayList News { get; set; }
 
         private string Query { get; set; }
 
@@ -49,7 +50,7 @@ namespace VirtualAssistentApp
             InitializeComponent();
 
             //READ SETTINGS
-            readSettings();
+            ReadSettings();
 
             //INITIALIZING VARIABLES
             minimized = false;
@@ -75,7 +76,7 @@ namespace VirtualAssistentApp
             notifyIcon1.MouseDoubleClick += NotifyIcon1_MouseDoubleClick;
 
             //RUN METHODS
-            setupSpeechRecognition();
+            SetupSpeechRecognition();
             title.Focus();
 
             //START RECOGNIZING
@@ -119,7 +120,7 @@ namespace VirtualAssistentApp
         // METHODS-------------------------------------------------------------------------------------------------
 
         //READ SETINGS
-        private void readSettings()
+        private void ReadSettings()
         {
             var filename = @"C:\Github\VirtualAssistant\VirtualAssistentApp\settings.txt";
             var allLines = File.ReadAllLines(filename);
@@ -172,7 +173,7 @@ namespace VirtualAssistentApp
         }
 
         //---------------------------------------------------------------------------------------------------------
-        private void setupSpeechRecognition()
+        private void SetupSpeechRecognition()
         {
             RecognizerInfo recognizerInfo = null;
             foreach (RecognizerInfo ri in SpeechRecognitionEngine.InstalledRecognizers())
@@ -227,7 +228,7 @@ namespace VirtualAssistentApp
 
         //---------------------------------------------------------------------------------------------------------
         //OPEN DEFAULT BROWSER
-        private void openBrowser(string url)
+        private void OpenBrowser(string url)
         {
             synthesizer.Speak("Starting browser ");
             Process.Start(url);
@@ -235,7 +236,7 @@ namespace VirtualAssistentApp
 
         //---------------------------------------------------------------------------------------------------------
         //MINIMIZE OR MAXIMIZE BROWSER
-        private void minimizeBrowser()
+        private void MinimizeBrowser()
         {
             if (minimized)
             {
@@ -302,9 +303,57 @@ namespace VirtualAssistentApp
             return "error";
         }
 
+        //GET NEWS FROM YAHOO
+        private String GetNews()
+        {
+            News = new ArrayList();
+            XmlDocument wData = new XmlDocument();
+            String query = String.Format("https://www.yahoo.com/news/rss/topstories");
+            try
+            {
+                wData.Load(query);
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show("No Internet connection!");
+                Debug.WriteLine(ex);
+                return "No internet";
+            }
+
+            XmlNamespaceManager manager = new XmlNamespaceManager(wData.NameTable);
+            manager.AddNamespace("media", "http://search.yahoo.com/mrss/");
+
+            XmlNode channel = wData.SelectSingleNode("rss").SelectSingleNode("channel");
+            XmlNodeList nodes = wData.SelectNodes("rss/channel/item");
+
+            try
+            {
+                string text = "";
+
+                for (int i = 0; i < 11; i++)
+                {
+                    string n = channel.SelectNodes("item").Item(i).SelectSingleNode("title").InnerText;
+
+                    text += n + "\n";
+                    Debug.WriteLine("News :" + n);
+                }
+
+                synthesizer.SpeakAsync(text);
+
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex);
+                return "Error Receiving data";
+            }
+
+            return "error";
+
+        }
+
         //---------------------------------------------------------------------------------------------------------
         //START PROCESS 
-        private void startProgram(string app)
+        private void StartProgram(string app)
         {
             Process process = null;
 
@@ -321,7 +370,7 @@ namespace VirtualAssistentApp
 
         //---------------------------------------------------------------------------------------------------------
         //KILL PROCESS
-        private void killProgram(string app)
+        private void KillProgram(string app)
         {
             Process[] process = null;
 
@@ -346,7 +395,7 @@ namespace VirtualAssistentApp
 
         //---------------------------------------------------------------------------------------------------------
         //READ SELECTED TEXT
-        private void readSelected()
+        private void ReadSelected()
         {
             string clipboardText = "";
 
@@ -370,7 +419,7 @@ namespace VirtualAssistentApp
 
         //---------------------------------------------------------------------------------------------------------
         //SEARCH
-        private void startSearch(bool image)
+        private void StartSearch(bool image)
         {
             try
             {
@@ -401,11 +450,11 @@ namespace VirtualAssistentApp
                 //START SEARCH BASED ON IMAGE OR NOT
                 if (image == true && Query != "")
                 {
-                    openBrowser("http://www.google.nl/images?q=" + Uri.EscapeDataString(Query));
+                    OpenBrowser("http://www.google.nl/images?q=" + Uri.EscapeDataString(Query));
                 }
                 else
                 {
-                    openBrowser("http://www.google.nl/search?q=" + Uri.EscapeDataString(Query));
+                    OpenBrowser("http://www.google.nl/search?q=" + Uri.EscapeDataString(Query));
                 }
 
 
@@ -447,14 +496,14 @@ namespace VirtualAssistentApp
                 }
 
                 //AWAKE PROGRAM
-                if (speech == "Hey " + BotName || speech == BotName)
+                if (speech.Contains(BotName))
                 {
                     isAwake = true;
                     synthesizer.Speak("Whats up");
                 }
 
                 //WHEN READING TEXT, SAY STOP TO CANCEL SPEAK
-                if (speech == "Stop")
+                if (speech.Contains("Stop"))
                 {
                     var current = synthesizer.GetCurrentlySpokenPrompt();
 
@@ -471,14 +520,14 @@ namespace VirtualAssistentApp
                     if ((speech.StartsWith("Search For") || speech.StartsWith("search for")) && !speech.Contains("images"))
                     {
                         recEngine.RecognizeAsyncStop();
-                        startSearch(false);
+                        StartSearch(false);
                     }
 
                     //GOOGLE IMAGE SEARCH
                     else if (speech.StartsWith("Search For Images") || speech.StartsWith("search for images"))
                     {
                         recEngine.RecognizeAsyncStop();
-                        startSearch(true);
+                        StartSearch(true);
                     }
 
 
@@ -486,31 +535,31 @@ namespace VirtualAssistentApp
                     //WORD
                     else if (speech.StartsWith("Close") && speech.Contains("Word"))
                     {
-                        killProgram("WINWORD");
+                        KillProgram("WINWORD");
                     }
                     else if (speech.Contains("Word"))
                     {
-                        startProgram(@"C:\Program Files\Microsoft Office\root\Office16\WINWORD.exe");
+                        StartProgram(@"C:\Program Files\Microsoft Office\root\Office16\WINWORD.exe");
                     }
 
                     //EXCEL
                     else if (speech.StartsWith("Close") && speech.Contains("EXCEL"))
                     {
-                        killProgram("EXCEL");
+                        KillProgram("EXCEL");
                     }
                     else if (speech.Contains("EXCEL"))
                     {
-                        startProgram(@"C:\Program Files\Microsoft Office\root\Office16\EXCEL.exe");
+                        StartProgram(@"C:\Program Files\Microsoft Office\root\Office16\EXCEL.exe");
                     }
 
                     //POWERPOINT
                     else if (speech.StartsWith("Close") && speech.Contains("Powerpoint"))
                     {
-                        killProgram("POWERPNT");
+                        KillProgram("POWERPNT");
                     }
                     else if (speech.Contains("Powerpoint"))
                     {
-                        startProgram(@"C:\Program Files\Microsoft Office\root\Office16\POWERPNT.exe");
+                        StartProgram(@"C:\Program Files\Microsoft Office\root\Office16\POWERPNT.exe");
                     }
 
 
@@ -518,21 +567,21 @@ namespace VirtualAssistentApp
                     //NOTE PAD
                     else if (speech.StartsWith("Close") && speech.Contains("Note Pad"))
                     {
-                        killProgram("notepad");
+                        KillProgram("notepad");
                     }
                     else if (speech.Contains("Note Pad"))
                     {
-                        startProgram(@"C:\WINDOWS\system32\notepad.exe");
+                        StartProgram(@"C:\WINDOWS\system32\notepad.exe");
                     }
 
                     //VISUAL STUDIO
                     else if (speech.StartsWith("Close") && speech.Contains("Visual Studio"))
                     {
-                        killProgram("devenv");
+                        KillProgram("devenv");
                     }
                     else if (speech.Contains("Visual Studio"))
                     {
-                        startProgram(@"C:\Program Files (x86)\Microsoft Visual Studio 14.0\Common7\IDE\devenv.exe");
+                        StartProgram(@"C:\Program Files (x86)\Microsoft Visual Studio 14.0\Common7\IDE\devenv.exe");
                     }
 
                     //SAVE ACTION IN APPS
@@ -573,7 +622,7 @@ namespace VirtualAssistentApp
                     //NEWS
                     else if (speech.Contains("News") || speech.Contains("Headlines"))
                     {
-                        openBrowser("https://news.google.com/");
+                        GetNews();
                     }
 
 
@@ -581,37 +630,37 @@ namespace VirtualAssistentApp
                     //GO TO GOOGLE
                     else if (speech.Contains("Google") || speech.Contains("Internet"))
                     {
-                        openBrowser("http://www.google.nl");
+                        OpenBrowser("http://www.google.nl");
                     }
 
                     //GMAIL
                     else if (speech.Contains("G Mail"))
                     {
-                        openBrowser("https://gmail.com");
+                        OpenBrowser("https://gmail.com");
                     }
 
                     //FACEBOOK
                     else if (speech.Contains("Facebook"))
                     {
-                        openBrowser("https://facebook.com");
+                        OpenBrowser("https://facebook.com");
                     }
 
                     //TWITTER
                     else if (speech.Contains("Twitter"))
                     {
-                        openBrowser("https://twitter.com");
+                        OpenBrowser("https://twitter.com");
                     }
 
                     //OPEN BROWSER
                     else if (speech.StartsWith("Open") && (speech.Contains("Browser") || speech.Contains("Internet")))
                     {
-                        openBrowser("http://www.google.nl");
+                        OpenBrowser("http://www.google.nl");
                     }
 
                     //CLOSE BROWSER
                     else if (speech.StartsWith("Close") && (speech.Contains("Browser") || speech.Contains("Internet")))
                     {
-                        minimizeBrowser();
+                        MinimizeBrowser();
                     }
 
                     //LOGIN
@@ -633,29 +682,29 @@ namespace VirtualAssistentApp
                     //WINDOWS MEDIA PLAYER
                     else if (speech.StartsWith("Close") && speech.Contains("Media Player"))
                     {
-                        killProgram("wmplayer");
+                        KillProgram("wmplayer");
                     }
 
                     else if (speech.Contains("Media Player"))
                     {
-                        Process.Start(@"C:\Program Files (x86)\Windows Media Player\wmplayer.exe");
+                        StartProgram(@"C:\Program Files (x86)\Windows Media Player\wmplayer.exe");
                     }
 
                     //RADIO
                     else if (speech.Contains("Fun X"))
                     {
-                        openBrowser("http://radioplayer.npo.nl/funx/?channel=null");
+                        OpenBrowser("http://radioplayer.npo.nl/funx/?channel=null");
                     }
 
                     else if (speech.Contains("Radio"))
                     {
-                        openBrowser("http://radioplayer.npo.nl/funx/?channel=null");
+                        OpenBrowser("http://radioplayer.npo.nl/funx/?channel=null");
                     }
 
                     //YOUTUBE
                     else if (speech.Contains("YouTube") || speech.Contains("You Tjub"))
                     {
-                        openBrowser("https://youtube.com");
+                        OpenBrowser("https://youtube.com");
                     }
 
                     //PLAYER CONTROLS
@@ -704,7 +753,7 @@ namespace VirtualAssistentApp
                     //READ SELECTED TEXT
                     else if (speech.Contains("Read"))
                     {
-                        readSelected();
+                        ReadSelected();
                     }
 
                     //EXIT
