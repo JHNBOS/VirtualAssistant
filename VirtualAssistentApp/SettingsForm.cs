@@ -88,10 +88,19 @@ namespace VirtualAssistentApp
 
             File.WriteAllLines(filename, settings);
 
-            using (StreamWriter w = File.AppendText(@"C:\Github\VirtualAssistant\VirtualAssistentApp\commands.txt"))
+            string[] commands = File.ReadAllLines(@"C:\Github\VirtualAssistant\VirtualAssistentApp\commands.txt");
+
+            foreach (var line in commands)
             {
-                w.WriteLine(botName);
+                if (line != botName)
+                {
+                    using (StreamWriter w = File.AppendText(@"C:\Github\VirtualAssistant\VirtualAssistentApp\commands.txt"))
+                    {
+                        w.WriteLine(botName);
+                    }
+                }
             }
+
 
             MainForm f = new MainForm();
             f.Show();

@@ -37,13 +37,13 @@
             this.explainLabel = new System.Windows.Forms.Label();
             this.btnSettings = new System.Windows.Forms.Button();
             this.mediaBox = new System.Windows.Forms.PictureBox();
-            this.btnAddCommand = new System.Windows.Forms.Button();
             this.appBox = new System.Windows.Forms.PictureBox();
             this.officeBox = new System.Windows.Forms.PictureBox();
             this.systemBox = new System.Windows.Forms.PictureBox();
             this.notifyIcon1 = new System.Windows.Forms.NotifyIcon(this.components);
             this.closeButton = new System.Windows.Forms.Button();
             this.minimizeButton = new System.Windows.Forms.Button();
+            this.disableMicButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.weatherBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.internetBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.selfieBox)).BeginInit();
@@ -109,7 +109,7 @@
             this.explainLabel.ForeColor = System.Drawing.Color.White;
             this.explainLabel.Location = new System.Drawing.Point(58, 402);
             this.explainLabel.Name = "explainLabel";
-            this.explainLabel.Size = new System.Drawing.Size(439, 33);
+            this.explainLabel.Size = new System.Drawing.Size(529, 33);
             this.explainLabel.TabIndex = 4;
             this.explainLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
@@ -138,20 +138,6 @@
             this.mediaBox.Size = new System.Drawing.Size(90, 90);
             this.mediaBox.TabIndex = 6;
             this.mediaBox.TabStop = false;
-            // 
-            // btnAddCommand
-            // 
-            this.btnAddCommand.BackColor = System.Drawing.Color.Transparent;
-            this.btnAddCommand.BackgroundImage = global::VirtualAssistentApp.Properties.Resources.add;
-            this.btnAddCommand.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.btnAddCommand.FlatAppearance.BorderSize = 0;
-            this.btnAddCommand.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnAddCommand.Location = new System.Drawing.Point(561, 402);
-            this.btnAddCommand.Name = "btnAddCommand";
-            this.btnAddCommand.Size = new System.Drawing.Size(53, 41);
-            this.btnAddCommand.TabIndex = 7;
-            this.btnAddCommand.UseVisualStyleBackColor = true;
-            this.btnAddCommand.Click += new System.EventHandler(this.btnAddCommand_Click);
             // 
             // appBox
             // 
@@ -238,6 +224,20 @@
             this.minimizeButton.UseVisualStyleBackColor = false;
             this.minimizeButton.Click += new System.EventHandler(this.minimizeButton_Click);
             // 
+            // disableMicButton
+            // 
+            this.disableMicButton.BackColor = System.Drawing.Color.Transparent;
+            this.disableMicButton.BackgroundImage = global::VirtualAssistentApp.Properties.Resources.muted;
+            this.disableMicButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.disableMicButton.FlatAppearance.BorderSize = 0;
+            this.disableMicButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.disableMicButton.Location = new System.Drawing.Point(620, 348);
+            this.disableMicButton.Name = "disableMicButton";
+            this.disableMicButton.Size = new System.Drawing.Size(53, 41);
+            this.disableMicButton.TabIndex = 13;
+            this.disableMicButton.UseVisualStyleBackColor = true;
+            this.disableMicButton.Click += new System.EventHandler(this.disableMicButton_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 24F);
@@ -246,12 +246,12 @@
             this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(685, 455);
+            this.Controls.Add(this.disableMicButton);
             this.Controls.Add(this.minimizeButton);
             this.Controls.Add(this.closeButton);
             this.Controls.Add(this.systemBox);
             this.Controls.Add(this.officeBox);
             this.Controls.Add(this.appBox);
-            this.Controls.Add(this.btnAddCommand);
             this.Controls.Add(this.mediaBox);
             this.Controls.Add(this.btnSettings);
             this.Controls.Add(this.explainLabel);
@@ -287,13 +287,13 @@
         private System.Windows.Forms.Label explainLabel;
         private System.Windows.Forms.Button btnSettings;
         private System.Windows.Forms.PictureBox mediaBox;
-        private System.Windows.Forms.Button btnAddCommand;
         private System.Windows.Forms.PictureBox appBox;
         private System.Windows.Forms.PictureBox officeBox;
         private System.Windows.Forms.PictureBox systemBox;
         private System.Windows.Forms.NotifyIcon notifyIcon1;
         private System.Windows.Forms.Button closeButton;
         private System.Windows.Forms.Button minimizeButton;
+        private System.Windows.Forms.Button disableMicButton;
     }
 }
 

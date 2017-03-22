@@ -40,6 +40,7 @@ namespace VirtualAssistentApp
         private bool minimized { get; set; }
         private bool formMinized { get; set; }
         public bool UseAwake { get; set; }
+        private bool disableMic { get; set; }
         private bool selfie = false;
 
 
@@ -53,6 +54,7 @@ namespace VirtualAssistentApp
             //INITIALIZING VARIABLES
             minimized = false;
             formMinized = false;
+            disableMic = false;
             explainLabel.Text = "Start By Saying '" + BotName + "'";
 
             //SET TOOLTIPS
@@ -64,7 +66,6 @@ namespace VirtualAssistentApp
             officeBox.MouseHover += OfficeBox_MouseHover;
             systemBox.MouseHover += SystemBox_MouseHover;
             btnSettings.MouseHover += BtnSettings_MouseHover;
-            btnAddCommand.MouseHover += BtnAddCommand_MouseHover;
             closeButton.MouseHover += CloseButton_MouseHover;
             minimizeButton.MouseHover += MinimizeButton_MouseHover;
 
@@ -429,7 +430,7 @@ namespace VirtualAssistentApp
 
         //------------------------------------------------------------------------------------------------------------
         // LISTENERS----------------------------------------------------------------------------------------------
-        
+
         //SPEECH RECOGNIZER LISTENER
         private void RecEngine_SpeechRecognized(object sender, SpeechRecognizedEventArgs e)
         {
@@ -465,13 +466,15 @@ namespace VirtualAssistentApp
 
                 if (isAwake == true)
                 {
-
+                    ///-------SEARCH---------------------------------------------------------
+                    //GOOGLE SEARCH
                     if ((speech.StartsWith("Search For") || speech.StartsWith("search for")) && !speech.Contains("images"))
                     {
                         recEngine.RecognizeAsyncStop();
                         startSearch(false);
                     }
 
+                    //GOOGLE IMAGE SEARCH
                     else if (speech.StartsWith("Search For Images") || speech.StartsWith("search for images"))
                     {
                         recEngine.RecognizeAsyncStop();
@@ -479,194 +482,238 @@ namespace VirtualAssistentApp
                     }
 
 
-                    switch (speech)
+                    ///-------MICROSOFT OFFICE---------------------------------------------------------
+                    //WORD
+                    else if (speech.StartsWith("Close") && speech.Contains("Word"))
                     {
-                        //--------------------------------------------------------------------------------------//
-                        //----BEGIN OF APPLICATIONS---------------------------------------------------------------//
+                        killProgram("WINWORD");
+                    }
+                    else if (speech.Contains("Word"))
+                    {
+                        startProgram(@"C:\Program Files\Microsoft Office\root\Office16\WINWORD.exe");
+                    }
 
-                        case "Open Word":
-                            startProgram(@"C:\Program Files\Microsoft Office\root\Office16\WINWORD.exe");
-                            break;
-                        case "Close Word":
-                            killProgram("WINWORD");
-                            break;
+                    //EXCEL
+                    else if (speech.StartsWith("Close") && speech.Contains("EXCEL"))
+                    {
+                        killProgram("EXCEL");
+                    }
+                    else if (speech.Contains("EXCEL"))
+                    {
+                        startProgram(@"C:\Program Files\Microsoft Office\root\Office16\EXCEL.exe");
+                    }
 
-                        case "Open Excel":
-                            startProgram(@"C:\Program Files\Microsoft Office\root\Office16\EXCEL.exe");
-                            break;
-                        case "Close Excel":
-                            killProgram("EXCEL");
-                            break;
+                    //POWERPOINT
+                    else if (speech.StartsWith("Close") && speech.Contains("Powerpoint"))
+                    {
+                        killProgram("POWERPNT");
+                    }
+                    else if (speech.Contains("Powerpoint"))
+                    {
+                        startProgram(@"C:\Program Files\Microsoft Office\root\Office16\POWERPNT.exe");
+                    }
 
-                        case "Open Powerpoint":
-                            startProgram(@"C:\Program Files\Microsoft Office\root\Office16\POWERPNT.exe");
-                            break;
-                        case "Close Powerpoint":
-                            killProgram("POWERPNT");
-                            break;
 
-                        case "Open Note Pad":
-                            startProgram(@"C:\WINDOWS\system32\notepad.exe");
-                            break;
-                        case "Close Note Pad":
-                            killProgram("notepad");
-                            break;
+                    ///-------APPLICATIONS---------------------------------------------------------
+                    //NOTE PAD
+                    else if (speech.StartsWith("Close") && speech.Contains("Note Pad"))
+                    {
+                        killProgram("notepad");
+                    }
+                    else if (speech.Contains("Note Pad"))
+                    {
+                        startProgram(@"C:\WINDOWS\system32\notepad.exe");
+                    }
 
-                        case "Open Visual Studio":
-                            startProgram(@"C:\Program Files (x86)\Microsoft Visual Studio 14.0\Common7\IDE\devenv.exe");
-                            break;
-                        case "Close Visual Studio":
-                            killProgram("devenv");
-                            break;
+                    //VISUAL STUDIO
+                    else if (speech.StartsWith("Close") && speech.Contains("Visual Studio"))
+                    {
+                        killProgram("devenv");
+                    }
+                    else if (speech.Contains("Visual Studio"))
+                    {
+                        startProgram(@"C:\Program Files (x86)\Microsoft Visual Studio 14.0\Common7\IDE\devenv.exe");
+                    }
 
-                        case "Save":
-                            SendKeys.Send("^(s)");
-                            break;
+                    //SAVE ACTION IN APPS
+                    else if (speech.Contains("Save"))
+                    {
+                        SendKeys.Send("^(s)");
+                    }
 
-                        //----END OF APPLICATIONS---------------------------------------------------------------//
-                        //--------------------------------------------------------------------------------------//
-                        //----BEGIN OF INFORMATION---------------------------------------------------------------//
 
-                        case "Whats The Date":
-                            synthesizer.Speak("Today is " + DateTime.Now.ToString("dd MMMM"));
-                            break;
+                    ///-------INFORMATION---------------------------------------------------------
+                    //DATE
+                    else if (speech.Contains("Date"))
+                    {
+                        synthesizer.Speak("Today is " + DateTime.Now.ToString("dd MMMM"));
+                    }
 
-                        case "Whats The Time":
-                            synthesizer.Speak("The time is " + DateTime.Now.ToString("HH mm"));
-                            break;
+                    //TIME
+                    else if (speech.Contains("Time"))
+                    {
+                        synthesizer.Speak("The time is " + DateTime.Now.ToString("HH mm"));
+                    }
 
-                        case "Whats The Weather Like":
-                            synthesizer.Speak("The sky is " + GetWeather("cond").ToLower());
-                            break;
+                    //WEATHER
+                    else if (speech.Contains("Weather"))
+                    {
+                        synthesizer.Speak("The sky is " + GetWeather("cond").ToLower());
+                    }
 
-                        case "Whats The Temperature":
-                            string temperature = GetWeather("temp");
-                            Debug.WriteLine("Temperature: " + temperature);
-                            double temp = (double.Parse(temperature));
+                    //TEMPERATURE
+                    else if (speech.Contains("Temperature"))
+                    {
+                        string temperature = GetWeather("temp");
+                        double temp = (double.Parse(temperature));
 
-                            synthesizer.Speak("The temperature is " + Math.Round(temp, 1) + " degrees Celsius");
-                            break;
+                        synthesizer.Speak("The temperature is " + Math.Round(temp, 1) + " degrees Celsius");
+                    }
 
-                        //----END OF INFORMATION---------------------------------------------------------------//
-                        //--------------------------------------------------------------------------------------//
-                        //----BEGIN OF INTERNET---------------------------------------------------------------//
+                    //NEWS
+                    else if (speech.Contains("News") || speech.Contains("Headlines"))
+                    {
+                        openBrowser("https://news.google.com/");
+                    }
 
-                        case "Go To Internet":
-                        case "Go To Google":
-                            openBrowser("http://www.google.nl");
-                            break;
 
-                        case "Go To G Mail":
-                            openBrowser("https://gmail.com");
-                            break;
+                    ///-------INTERNET---------------------------------------------------------
+                    //GO TO GOOGLE
+                    else if (speech.Contains("Google") || speech.Contains("Internet"))
+                    {
+                        openBrowser("http://www.google.nl");
+                    }
 
-                        case "Go To Facebook":
-                            openBrowser("https://facebook.com");
-                            break;
+                    //GMAIL
+                    else if (speech.Contains("G Mail"))
+                    {
+                        openBrowser("https://gmail.com");
+                    }
 
-                        case "Login":
-                            SendKeys.Send("{ENTER}");
-                            break;
+                    //FACEBOOK
+                    else if (speech.Contains("Facebook"))
+                    {
+                        openBrowser("https://facebook.com");
+                    }
 
-                        case "Open Internet":
-                        case "Open Browser":
-                            openBrowser("http://www.google.nl");
-                            break;
+                    //TWITTER
+                    else if (speech.Contains("Twitter"))
+                    {
+                        openBrowser("https://twitter.com");
+                    }
 
-                        case "Close Internet":
-                        case "Close Browser":
-                            minimizeBrowser();
-                            break;
+                    //OPEN BROWSER
+                    else if (speech.StartsWith("Open") && (speech.Contains("Browser") || speech.Contains("Internet")))
+                    {
+                        openBrowser("http://www.google.nl");
+                    }
 
-                        case "Show Me The Latest Headlines":
-                            openBrowser("https://news.google.com/");
-                            break;
+                    //CLOSE BROWSER
+                    else if (speech.StartsWith("Close") && (speech.Contains("Browser") || speech.Contains("Internet")))
+                    {
+                        minimizeBrowser();
+                    }
 
-                        //----END OF INTERNET---------------------------------------------------------------//
-                        //--------------------------------------------------------------------------------------//
-                        //----BEGIN OF ENTERTAINMENT---------------------------------------------------------------//
+                    //LOGIN
+                    else if (speech.Contains("Login"))
+                    {
+                        SendKeys.Send("{ENTER}");
+                    }
 
-                        case "Take A Selfie":
-                        case "Selfie":
-                            capture = new Capture();
-                            selfie = true;
-                            Application.Idle += Application_Idle;
-                            break;
 
-                        case "Open Media Player":
-                            Process.Start(@"C:\Program Files (x86)\Windows Media Player\wmplayer.exe");
-                            break;
-                        case "Close Media Player":
-                            killProgram("wmplayer");
-                            break;
+                    ///-------ENTERTAINMENT---------------------------------------------------------
+                    //SELFIE
+                    else if (speech.Contains("Selfie"))
+                    {
+                        capture = new Capture();
+                        selfie = true;
+                        Application.Idle += Application_Idle;
+                    }
 
-                        case "Open Fun X":
-                            openBrowser("http://radioplayer.npo.nl/funx/?channel=null");
-                            break;
+                    //WINDOWS MEDIA PLAYER
+                    else if (speech.StartsWith("Close") && speech.Contains("Media Player"))
+                    {
+                        killProgram("wmplayer");
+                    }
 
-                        case "Open YouTube":
-                        case "Open You Tjub":
-                            openBrowser("https://youtube.com");
-                            break;
+                    else if (speech.Contains("Media Player"))
+                    {
+                        Process.Start(@"C:\Program Files (x86)\Windows Media Player\wmplayer.exe");
+                    }
 
-                        case "Open Radio":
-                            openBrowser("http://nederland.fm/");
-                            break;
+                    //RADIO
+                    else if (speech.Contains("Fun X"))
+                    {
+                        openBrowser("http://radioplayer.npo.nl/funx/?channel=null");
+                    }
 
-                        case "Play":
-                            SendKeys.Send("^( )");
-                            break;
+                    else if (speech.Contains("Radio"))
+                    {
+                        openBrowser("http://radioplayer.npo.nl/funx/?channel=null");
+                    }
 
-                        case "Pause":
-                            SendKeys.Send("^( )");
-                            break;
+                    //YOUTUBE
+                    else if (speech.Contains("YouTube") || speech.Contains("You Tjub"))
+                    {
+                        openBrowser("https://youtube.com");
+                    }
 
-                        //----END OF ENTERTAINMENT---------------------------------------------------------------//
-                        //--------------------------------------------------------------------------------------//
-                        //----BEGIN OF SYSTEM---------------------------------------------------------------//
+                    //PLAYER CONTROLS
+                    else if (speech.Contains("Play"))
+                    {
+                        SendKeys.Send("^( )");
+                    }
 
-                        case "Whats My Name":
-                        case "Who Am I":
-                            synthesizer.Speak("You Are " + UserName);
-                            break;
+                    else if (speech.Contains("Pause"))
+                    {
+                        SendKeys.Send("^( )");
+                    }
 
-                        case "Copy":
-                            SendKeys.Send("^(c)");
-                            break;
 
-                        case "Cut":
-                            SendKeys.Send("^(x)");
-                            break;
+                    ///-------SYSTEM---------------------------------------------------------
+                    //NAME
+                    else if (speech.Contains("Name") || speech.Contains("Who"))
+                    {
+                        synthesizer.Speak("You Are " + UserName);
+                    }
 
-                        case "Select All":
-                            SendKeys.Send("^(a)");
-                            break;
+                    //COPY
+                    else if (speech.Contains("Copy"))
+                    {
+                        SendKeys.Send("^(c)");
+                    }
 
-                        case "Paste":
-                            SendKeys.Send("^(v)");
-                            break;
+                    //CUT
+                    else if (speech.Contains("Cut"))
+                    {
+                        SendKeys.Send("^(x)");
+                    }
 
-                        case "Read Selected Text":
-                            readSelected();
-                            break;
+                    //PASTE
+                    else if (speech.Contains("Paste"))
+                    {
+                        SendKeys.Send("^(v)");
+                    }
 
-                        case "Close":
-                        case "Exit":
-                        case "Goodbye":
-                            Exit();
-                            break;
+                    //SELECT ALL
+                    else if (speech.Contains("Select"))
+                    {
+                        SendKeys.Send("^(a)");
+                    }
 
-                        //----END OF SYSTEM---------------------------------------------------------------//
-                        //--------------------------------------------------------------------------------------//
+                    //READ SELECTED TEXT
+                    else if (speech.Contains("Read"))
+                    {
+                        readSelected();
+                    }
 
-                        default:
-                            break;
-
-                        //--------------------------------------------------------------------------------------//
+                    //EXIT
+                    else if (speech.Contains("Exit") || speech.Contains("Goodbye") || speech.Contains("Close"))
+                    {
+                        Exit();
                     }
 
                     isAwake = false;
-
                 }
             }
             catch (Exception ex)
@@ -756,12 +803,6 @@ namespace VirtualAssistentApp
             tt.SetToolTip(this.btnSettings, "Open Settings");
         }
 
-        private void BtnAddCommand_MouseHover(object sender, EventArgs e)
-        {
-            ToolTip tt = new ToolTip();
-            tt.SetToolTip(this.btnAddCommand, "Add New Command");
-        }
-
         private void MinimizeButton_MouseHover(object sender, EventArgs e)
         {
             ToolTip tt = new ToolTip();
@@ -826,6 +867,23 @@ namespace VirtualAssistentApp
                 ShowInTaskbar = false;
                 notifyIcon1.Visible = true;
                 notifyIcon1.ShowBalloonTip(1000);
+            }
+        }
+
+        //ENABLE/DISABLE MICROPHONE
+        private void disableMicButton_Click(object sender, EventArgs e)
+        {
+            if (disableMic == false)
+            {
+                disableMicButton.BackgroundImage = Image.FromFile(@"C:\Github\VirtualAssistant\VirtualAssistentApp\Images\png\muted.png");
+                disableMic = true;
+                recEngine.RecognizeAsyncStop();
+            }
+            else
+            {
+                disableMicButton.BackgroundImage = Image.FromFile(@"C:\Github\VirtualAssistant\VirtualAssistentApp\Images\png\microphone.png");
+                disableMic = false;
+                recEngine.RecognizeAsync(RecognizeMode.Multiple);
             }
         }
 
