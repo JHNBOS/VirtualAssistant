@@ -1,33 +1,35 @@
 ﻿using System;
 using System.Collections;
 using System.IO;
+using System.Reflection;
 using System.Windows.Forms;
 
 namespace VirtualAssistentApp
 {
     public partial class SettingsForm : Form
     {
-        string filename = @"C:\Github\VirtualAssistant\VirtualAssistentApp\settings.txt";
+        public string SettingsPath { get; set; }
 
         public SettingsForm()
         {
             InitializeComponent();
 
-            if (File.ReadAllLines(filename).Length > 0)
+            this.SettingsPath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), @"Data\settings.txt");
+            if (File.ReadAllLines(SettingsPath).Length > 0)
             {
-                readSettings();
+                ReadSettings();
             }
         }
 
-        private void readSettings()
+        private void ReadSettings()
         {
-            var allLines = File.ReadAllLines(filename);
+            var settings = File.ReadAllLines(SettingsPath);
 
-            if (allLines.Length > 0)
+            if (settings.Length > 0)
             {
                 ArrayList settingsList = new ArrayList();
 
-                foreach (var line in allLines)
+                foreach (var line in settings)
                 {
                     var currentLine = line.Split(':')[1];
                     settingsList.Add(currentLine);
@@ -76,7 +78,7 @@ namespace VirtualAssistentApp
             string botName = assistentBox.Text.ToString();
             string useAwake = awakeCheckBox.Checked.ToString();
 
-            File.WriteAllText(filename, "");
+            File.WriteAllText(this.SettingsPath, "");
 
             string[] settings = new string[6];
             settings[0] = "Name:" + name;
@@ -86,21 +88,20 @@ namespace VirtualAssistentApp
             settings[4] = "BotName:" + botName;
             settings[5] = "UseAwake:" + useAwake;
 
-            File.WriteAllLines(filename, settings);
+            File.WriteAllLines(this.SettingsPath, settings);
 
-            string[] commands = File.ReadAllLines(@"C:\Github\VirtualAssistant\VirtualAssistentApp\commands.txt");
+            string[] commands = File.ReadAllLines(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), @"Data\commands.txt"));
 
             foreach (var line in commands)
             {
                 if (line != botName)
                 {
-                    using (StreamWriter w = File.AppendText(@"C:\Github\VirtualAssistant\VirtualAssistentApp\commands.txt"))
+                    using (StreamWriter w = File.AppendText(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), @"Data\commands.txt")))
                     {
                         w.WriteLine(botName);
                     }
                 }
             }
-
 
             MainForm f = new MainForm();
             f.Show();
