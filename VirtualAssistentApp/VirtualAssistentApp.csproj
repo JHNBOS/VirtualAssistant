@@ -137,7 +137,9 @@
     <EmbeddedResource Include="SettingsForm.resx">
       <DependentUpon>SettingsForm.cs</DependentUpon>
     </EmbeddedResource>
-    <None Include="Images\minimize.png" />
+    <None Include="Images\minimize.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="OpenTK.dll.config" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
@@ -158,10 +160,18 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Images\app-icon.ico" />
-    <Content Include="Images\background.jpg" />
-    <Content Include="Images\carbon.png" />
-    <None Include="Images\maximize.png" />
-    <Content Include="Images\close.png" />
+    <Content Include="Images\background.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\carbon.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <None Include="Images\maximize.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <Content Include="Images\close.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Images\png\add-1.png" />
     <Content Include="Images\png\add-2.png" />
     <Content Include="Images\png\add-3.png" />
@@ -358,7 +368,9 @@
     <Content Include="Images\png\menu-4.png" />
     <Content Include="Images\png\menu.png" />
     <Content Include="Images\png\microphone-1.png" />
-    <Content Include="Images\png\microphone.png" />
+    <Content Include="Images\png\microphone.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Images\png\minus-1.png" />
     <Content Include="Images\png\minus.png" />
     <Content Include="Images\png\more-1.png" />
@@ -371,7 +383,9 @@
     <Content Include="Images\png\music-player-3.png" />
     <Content Include="Images\png\music-player.png" />
     <Content Include="Images\png\mute.png" />
-    <Content Include="Images\png\muted.png" />
+    <Content Include="Images\png\muted.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Images\png\navigation-1.png" />
     <Content Include="Images\png\navigation.png" />
     <Content Include="Images\png\network.png" />
